@@ -278,6 +278,84 @@ button svg {
   transition-delay: 0.2s;
 }
 
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        padding: 10px 20px;
+    }
+    .logo {
+        font-size: 28px;
+        margin-bottom: 10px;
+    }
+    .nav-links {
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+    .nav-links a {
+        font-size: 18px;
+    }
+    .hero h1 {
+        font-size: 40px;
+    }
+    .hero p {
+        font-size: 16px;
+    }
+    .what-we-do h2 {
+        font-size: 28px;
+    }
+    .what-we-do-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    .what-we-do-left,
+    .what-we-do-right {
+        text-align: center;
+        font-size: 18px;
+    }
+}
+@media (max-width: 768px) {
+    .features {
+        flex-direction: column;
+        align-items: center;
+    }
+    .feature-box {
+        width: 90%;
+        height: auto;
+        margin-bottom: 20px;
+        transform: skew(0deg);
+    }
+    .feature-box:hover {
+        height: auto;
+        transform: none;
+    }
+    .feature-box h3 {
+        font-size: 24px;
+    }
+    .feature-box p {
+        font-size: 14px;
+    }
+    .featured-section {
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        gap: 20px;
+    }
+    .left-container, .right-container {
+        width: 95%;
+        margin: 0;
+    }
+    .btn-container {
+        justify-content: center;
+        margin-top: 10px;
+    }
+    .get-started-btn {
+        padding: 12px 24px;
+        font-size: 18px;
+    }
+}
+
+
+
 
 
     </style>
