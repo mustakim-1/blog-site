@@ -1,535 +1,1358 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>sulphuric banch</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;500;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            margin: 0;
-            font-family: 'Poppins', sans-serif;
-            background-color: #121212;
-            color: white;
-        }
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #222;
-            padding: 15px 30px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
-        .logo {
-            font-size: 32px;
-            font-family: 'Bebas Neue', sans-serif;
-            color: #fff;
-            letter-spacing: 2px;
-        }
-        .nav-links {
-            display: flex;
-            gap: 25px;
-        }
-        .nav-links a {
-            color: #ddd;
-            text-decoration: none;
-            font-size: 20px;
-            text-transform: uppercase;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-        .nav-links a:hover {
-            color: #37FF8B;
-        }
-        .hero {
-            text-align: center;
-            padding: 60px 20px;
-        }
-        .hero h1 {
-            font-size: 64px;
-            font-family: 'Bebas Neue', sans-serif;
-            color: #37fff5fe;
-        }
-        .hero p {
-            font-size: 20px;
-            margin: 15px 0;
-            color: #ccc;
-        }
-        .what-we-do {
-            padding: 60px 30px;
-        }
-        .what-we-do h2 {
-            font-size: 36px;
-            margin-bottom: 20px;
-            color: #37fff5fe;
-        }
-        .what-we-do-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-        }
-        .what-we-do-left {
-            flex: 1;
-            text-align: left;
-            font-weight: bold;
-            font-size: 32px;
-        }
-        .what-we-do-right {
-            flex: 1;
-            text-align: right;
-            font-weight: 500;
-            font-size: 20px;
-            color: #ccc;
-        }
-        .more-about {
-            color: hsl(180, 100%, 50%);
-            text-decoration: underline;
-            cursor: pointer;
-            display: inline-block;
-            margin-top: 10px;
-        }
-        .features {
-    display: flex;
-    justify-content: space-around;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-.feature-box {
-    width: 400px;
-    height: 300px;
-    padding: 0.5rem;
-    background: rgba(0, 255, 255, 0.15);
-    border-radius: 8px;
-    backdrop-filter: blur(5px);
-    border-bottom: 3px solid rgba(255, 255, 255, 0.44);
-    border-left: 2px rgba(255, 255, 255, 0.545) outset;
-    box-shadow: -40px 50px 30px rgba(0, 0, 0, 0.28);
-    transform: skewX(10deg);
-    transition: 0.7s;
-    overflow: hidden;
-    color: white;
-    text-align: center;
-}
-.feature-box:hover {
-    height: 420px;
-    transform: skew(0deg);
-}
-.feature-box h3 {
-    margin: 1.3rem;
-    color: #00ffff;
-    text-shadow: -10px 5px 10px rgba(0, 0, 0, 0.573);
-}
-.feature-box p {
-    font-size: 16px;
-    color: #e0ffff;
-}
-.feature-icon {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    padding: 9px;
-}
-.feature-icon svg {
-    width: 40px;
-    height: 40px;
-    fill: #00ffff;
-}
-
-.featured-section {
-    display: flex;
-    justify-content: space-between;
-    padding: 50px;
-    gap: 30px;
-}
-
-.left-container {
-    width: 45%;
-    background-color: #90e5ff;
-    border-radius: 20px;
-    padding: 20px;
-}
-
-.btn-container {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.tab-btn {
-    background-color: #00778f;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 20px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.tab-btn.active,
-.tab-btn:hover {
-    background-color: #bcbfc0;
-} 
-
-.content-box {
-    margin-top: 20px;
-}
-
-.content {
-    display: none;
-}
-
-.content.active {
-    display: block;
-}
-
-.right-container {
-    width: 50%;
-    padding: 20px;
-    text-align: left;
-}
-
-.get-started-btn {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 12px 24px;
-    background-color: #000;
-    color: #fff;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.get-started-btn:hover {
-    background-color: #333;
-}
-
-button {
-  padding: 9px;
-  margin: 0;
-  
-  background: none;
-  cursor: pointer;
-  box-shadow: 5px 6px 8px rgba(0, 225, 255, 0.3);
-  transition: box-shadow 0.3s ease; /* Smooth shadow transition */
-}
-
-button:hover {
-  box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
-}
-
-button {
-  --primary-color: hwb(0 100% 0%);
-  --hovered-color: #82ffff;
-  position: relative;
-  display: flex;
-  font-weight: 600;
-  font-size: 20px;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-button p {
-  margin: 0;
-  position: relative;
-  font-size: 20px;
-  color: var(--primary-color);
-}
-
-button::after {
-  position: absolute;
-  content: "";
-  width: 0;
-  left: 0;
-  bottom: -7px;
-  background: var(--hovered-color);
-  height: 2px;
-  transition: 0.3s ease-out;
-}
-
-button p::before {
-  position: absolute;
-  content: "Get Started";
-  width: 0%;
-  inset: 0;
-  color: var(--hovered-color);
-  overflow: hidden;
-  transition: 0.3s ease-out;
-}
-
-button:hover::after {
-  width: 100%;
-}
-
-button:hover p::before {
-  width: 100%;
-}
-
-button:hover svg {
-  transform: translateX(4px);
-  color: var(--hovered-color);
-}
-
-button svg {
-  color: var(--primary-color);
-  transition: 0.2s;
-  position: relative;
-  width: 15px;
-  transition-delay: 0.2s;
-}
-
-@media (max-width: 768px) {
-    /* Navbar */
-    .navbar {
-        flex-direction: column;
+      body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(145deg, #f5f7fe, #d2dbf9);
+        color: rgb(0, 0, 0);
+      }
+      .navbar {
+        display: flex;
+        justify-content: space-between;
         align-items: center;
-        padding: 10px 20px;
-    }
-
-    .logo {
-        font-size: 28px;
-        margin-bottom: 10px;
+        background-color: #000000;
+        padding: 15px 30px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }
+      .logo {
+        font-size: 32px;
+        font-family: "Bebas Neue", sans-serif;
+        color: #fff;
+        letter-spacing: 2px;
+      }
+      .nav-links {
+        display: flex;
+        gap: 25px;
+      }
+      .nav-links a {
+        color: #ddd;
+        text-decoration: none;
+        font-size: 20px;
+        text-transform: uppercase;
+        position: relative;
+        transition: all 0.3s ease;
+      }
+      .nav-links a:hover {
+        color: #8dfdff;
+      }
+      .hero {
         text-align: center;
-    }
+        padding: 60px 20px;
+      }
+      .hero h1 {
+        font-size: 64px;
+        font-family: "Bebas Neue", sans-serif;
+        color: #00eefffe;
+      }
+      .hero p {
+        font-size: 20px;
 
-    .nav-links {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px;
-    }
-
-    .nav-links a {
-        font-size: 16px;
-        padding: 5px;
-    }
-
-    /* Hero Section */
-    .hero {
-        padding: 40px 10px;
-    }
-
-    .hero h1 {
+        color: #000000;
+      }
+      .what-we-do {
+        padding: 60px 30px;
+      }
+      .what-we-do h2 {
         font-size: 36px;
-    }
-
-    .hero p {
-        font-size: 16px;
-        margin: 10px 0;
-    }
-
-    /* What We Do Section */
-    .what-we-do h2 {
-        font-size: 28px;
-        text-align: center;
-    }
-
-    .what-we-do-content {
-        flex-direction: column;
-        gap: 20px;
-        text-align: center;
-        padding: 10px;
-    }
-
-    .what-we-do-left,
-    .what-we-do-right {
-        font-size: 18px;
-        text-align: center;
-    }
-
-    /* Features Section */
-    .features {
-        flex-direction: column;
+        margin-bottom: 20px;
+        color: #00eefffe;
+      }
+      .what-we-do-content {
+        display: flex;
+        justify-content: space-between;
         align-items: center;
-        gap: 20px;
-    }
-
-    .feature-box {
-        width: 100%; /* Make the box take full width */
-        max-width: 380px;
-        height: auto; /* Adjust height for better fit */
-        margin: 10px 0;
-        padding: 20px;
-        transform: none;
-    }
-
-    .feature-box:hover {
-        height: auto;
-        transform: none;
-    }
-
-    .feature-box h3 {
-        font-size: 24px;
-    }
-
-    .feature-box p {
-        font-size: 14px;
-    }
-
-   
-}
-
-@media (max-width: 768px) {
-    /* Featured Section */
-    .featured-section {
-        flex-direction: column;
-        align-items: center;
-        padding: 20px;
-        gap: 20px;
-    }
-
-    .left-container, .right-container {
-        width: 100%; /* Take full width */
-        padding: 15px;
-        text-align: center; /* Center the content for a balanced look */
-    }
-
-    .left-container h2, .right-container h2 {
-        font-size: 28px;
-        margin-bottom: 10px;
-    }
-
-    .left-container p, .right-container p {
-        font-size: 16px;
-        line-height: 1.5;
-        margin: 8px 0;
-    }
-
-    .left-container img, .right-container img {
-        width: 100%; /* Ensure images fit within the container */
-        height: auto;
-        max-width: 400px; /* Prevent images from stretching too much */
-        margin: 10px 0;
-    }
-
-    .btn-container {
-        margin: 15px 0;
+        margin-bottom: 40px;
+      }
+      .what-we-do-left {
+        flex: 1;
+        text-align: left;
+        font-weight: bold;
+        font-size: 32px;
+      }
+      .what-we-do-right {
+        flex: 1;
+        text-align: right;
+        font-weight: 500;
+        font-size: 20px;
+        color: #004251;
+      }
+      .unique-btn {
+        margin-top: 8px;
+        display: inline-block;
+        padding: 14px; /* Adjust padding for size */
+        font-size: 1em; /* Adjust font size */
+        font-weight: 600;
         text-align: center;
-    }
+        text-decoration: none;
+        color: #fff; /* Text color */
+        background: linear-gradient(
+          135deg,
+          #6c63ff,
+          #39a9db
+        ); /* Gradient background */
+        border: none;
+        border-radius: 30px; /* Rounded corners */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+        transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+        position: relative;
+        overflow: hidden; /* Needed for pseudo-element */
+        cursor: pointer;
+      }
 
-    .get-started-btn {
+      .unique-btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.2); /* Semi-transparent overlay */
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .unique-btn:hover {
+        transform: translateY(-5px); /* Slight lift on hover */
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .unique-btn:hover::before {
+        opacity: 1; /* Show overlay on hover */
+      }
+
+      .unique-btn:active {
+        transform: translateY(0); /* No lift on active */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      /* From Uiverse.io by cssbuttons-io */
+      .fancy {
+        background-color: transparent;
+        border: 2px solid #000;
+        border-radius: 0;
+        box-sizing: border-box;
+        color: #fff;
+        cursor: pointer;
+        display: inline-block;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        margin: 0;
+        outline: none;
+        overflow: visible;
+        padding: 1.25em 2em;
+        position: relative;
+        text-align: center;
+        text-decoration: none;
+        text-transform: none;
+        transition: all 0.3s ease-in-out;
+        user-select: none;
+        font-size: 13px;
+      }
+
+      .fancy::before {
+        content: " ";
+        width: 1.5625rem;
+        height: 2px;
+        background: black;
+        top: 50%;
+        left: 1.5em;
+        position: absolute;
+        transform: translateY(-50%);
+        transform-origin: center;
+        transition: background 0.3s linear, width 0.3s linear;
+      }
+
+      .fancy .text {
+        font-size: 1.125em;
+        line-height: 1.33333em;
+        padding-left: 2em;
+        display: block;
+        text-align: left;
+        transition: all 0.3s ease-in-out;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: black;
+      }
+
+      .fancy .top-key {
+        height: 2px;
+        width: 1.5625rem;
+        top: -2px;
+        left: 0.625rem;
+        position: absolute;
+        background: #e8e8e8;
+        transition: width 0.5s ease-out, left 0.3s ease-out;
+      }
+
+      .fancy .bottom-key-1 {
+        height: 2px;
+        width: 1.5625rem;
+        right: 1.875rem;
+        bottom: -2px;
+        position: absolute;
+        background: #e8e8e8;
+        transition: width 0.5s ease-out, right 0.3s ease-out;
+      }
+
+      .fancy .bottom-key-2 {
+        height: 2px;
+        width: 0.625rem;
+        right: 0.625rem;
+        bottom: -2px;
+        position: absolute;
+        background: #e8e8e8;
+        transition: width 0.5s ease-out, right 0.3s ease-out;
+      }
+
+      .fancy:hover {
+        color: white;
+        background: black;
+      }
+
+      .fancy:hover::before {
+        width: 0.9375rem;
+        background: white;
+      }
+
+      .fancy:hover .text {
+        color: white;
+        padding-left: 1.5em;
+      }
+
+      .fancy:hover .top-key {
+        left: -2px;
+        width: 0px;
+      }
+
+      .fancy:hover .bottom-key-1,
+      .fancy:hover .bottom-key-2 {
+        right: 0;
+        width: 0;
+      }
+      .features {
+        display: flex;
+        justify-content: space-around;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+      .feature-box {
+        width: 400px;
+        height: 300px;
+        padding: 0.5rem;
+        background: rgba(0, 0, 0, 0.15);
+        border-radius: 8px;
+        backdrop-filter: blur(5px);
+        border-bottom: 3px solid rgba(255, 255, 255, 0.44);
+        border-left: 2px rgba(255, 255, 255, 0.545) outset;
+        box-shadow: -40px 50px 30px rgba(0, 0, 0, 0.28);
+        transform: skewX(10deg);
+        transition: 0.7s;
+        overflow: hidden;
+        color: white;
+        text-align: center;
+      }
+      .feature-box:hover {
+        height: 420px;
+        transform: skew(0deg);
+      }
+      .feature-box h3 {
+        margin: 1.3rem;
+        color: #004a4ffe;
+        text-shadow: -10px 5px 10px rgba(0, 0, 0, 0.573);
+      }
+      .feature-box p {
+        font-size: 16px;
+        color: #000000fe;
+      }
+      .feature-icon {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 9px;
+      }
+      .feature-icon svg {
+        width: 40px;
+        height: 40px;
+        fill: #ffffff;
+      }
+
+      .featured-section {
+        display: flex;
+        justify-content: space-between;
+        padding: 50px;
+        gap: 30px;
+      }
+
+      .left-container {
+        width: 45%;
+        background-color: #ffeded;
+        border-radius: 20px;
+        padding: 20px;
+      }
+
+      .btn-container {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .tab-btn {
+        background-color: #aeede4;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .tab-btn.active,
+      .tab-btn:hover {
+        background-color: #ffffff;
+      }
+
+      .content-box {
+        margin-top: 20px;
+      }
+
+      .content {
+        display: none;
+      }
+
+      .content.active {
+        display: block;
+      }
+
+      .right-container {
+        width: 50%;
+        padding: 20px;
+        text-align: left;
+      }
+
+      .get-started-btn {
+        display: inline-block;
+        margin-top: 20px;
         padding: 12px 24px;
-        font-size: 16px;
-        margin-top: 10px;
-    }
-}
+        background-color: #000;
+        color: #fff;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: bold;
+      }
 
+      .get-started-btn:hover {
+        background-color: #333;
+      }
+
+      button {
+        padding: 9px;
+        margin: 0;
+
+        background: none;
+        cursor: pointer;
+        box-shadow: 5px 6px 8px rgba(0, 225, 255, 0.3);
+        transition: box-shadow 0.3s ease; /* Smooth shadow transition */
+      }
+
+      button:hover {
+        box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.3); /* Enhanced shadow on hover */
+      }
+
+      button {
+        --primary-color: hwb(0 100% 0%);
+        --hovered-color: #26eded;
+        position: relative;
+        display: flex;
+        font-weight: 600;
+        font-size: 20px;
+        gap: 0.5rem;
+        align-items: center;
+      }
+
+      button p {
+        margin: 0;
+        position: relative;
+        font-size: 20px;
+        color: rgb(130, 130, 130);
+      }
+
+      button::after {
+        position: absolute;
+        content: "";
+        width: 0;
+        left: 0;
+        bottom: -7px;
+        background: var(--hovered-color);
+        height: 2px;
+        transition: 0.3s ease-out;
+      }
+
+      button p::before {
+        position: absolute;
+        content: "Get Started";
+        width: 0%;
+        inset: 0;
+        color: var(--hovered-color);
+        overflow: hidden;
+        transition: 0.3s ease-out;
+      }
+
+      button:hover::after {
+        width: 100%;
+      }
+
+      button:hover p::before {
+        width: 100%;
+      }
+
+      button:hover svg {
+        transform: translateX(4px);
+        color: var(--hovered-color);
+      }
+
+      button svg {
+        color: var(--primary-color);
+        transition: 0.2s;
+        position: relative;
+        width: 15px;
+        transition-delay: 0.2s;
+      }
+
+      .capabilities-section {
+        text-align: center;
+        padding: 60px 20px;
+        background: linear-gradient(145deg, #f5f7fe, #e8ecf9);
+      }
+
+      .capabilities-section h3 {
+        font-size: 20px;
+        color: #666;
+        margin-bottom: 5px;
+        letter-spacing: 1px;
+      }
+
+      .capabilities-section h2 {
+        font-size: 42px;
+        margin-bottom: 40px;
+        font-weight: bold;
+        font-family: "Bebas Neue", sans-serif;
+        color: #333;
+        text-transform: uppercase;
+      }
+
+      .capabilities-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        justify-content: center;
+      }
+
+      .capability-box {
+        background: white;
+        border-radius: 20px;
+        padding: 30px 20px;
+        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .capability-box:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15);
+      }
+
+      .icon {
+        font-size: 48px;
+        margin-bottom: 15px;
+        color: #6200ea;
+      }
+
+      .capability-box h4 {
+        font-size: 22px;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .capability-box p {
+        font-size: 16px;
+        color: #555;
+        margin-bottom: 20px;
+        line-height: 1.6;
+      }
+
+      .capability-box a {
+        font-size: 16px;
+        color: #6200ea;
+        text-decoration: none;
+        font-weight: bold;
+        position: relative;
+      }
+
+      .capability-box a::after {
+        content: "";
+        display: block;
+        width: 0;
+        height: 2px;
+        background: #6200ea;
+        transition: width 0.3s ease;
+      }
+
+      .capability-box a:hover::after {
+        width: 100%;
+      }
+
+      .mainstream-media-section {
+        padding: 60px 20px;
+        background-color: #f8f9fc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .media-content {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+      }
+
+      .media-text {
+        max-width: 400px;
+      }
+
+      .mainstream-media-section h2 {
+        font-size: 42px;
+        margin-bottom: 20px;
+        font-weight: bold;
+        font-family: "Bebas Neue", sans-serif;
+        color: #333;
+        text-transform: uppercase;
+      }
+
+      .mainstream-media-section p {
+        font-size: 18px;
+        color: #555;
+      }
+
+      .vertical-line {
+        width: 6px;
+        height: 200px;
+        background-color: #333;
+        margin: 0 20px;
+      }
+
+      .media-logos {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      .media-logos a img {
+        height: 80px;
+        filter: grayscale(100%);
+        transition: filter 0.3s ease;
+      }
+
+      .media-logos a:hover img {
+        filter: grayscale(0%);
+      }
+
+      .our-books-section {
+        padding: 60px 20px;
+        background-color: #f4f4f4;
+        text-align: center;
+      }
+
+      .our-books-section h2 {
+        font-size: 42px;
+        margin-bottom: 10px;
+        font-weight: bold;
+        font-family: "Bebas Neue", sans-serif;
+        color: #333;
+        text-transform: uppercase;
+      }
+
+      .our-books-section p {
+        font-size: 20px;
+        margin-bottom: 30px;
+        color: #555;
+      }
+
+      .slider-container {
+        position: relative;
+        width: 90%;
+        margin: auto;
+        overflow: hidden;
+        border-radius: 10px;
+      }
+
+      .books-slider {
+        display: flex;
+        transition: transform 0.5s ease;
+      }
+
+      .slide {
+        min-width: 300px;
+        margin: 0 5px;
+        transition: transform 0.3s ease;
+      }
+
+      .slide img {
+        width: 100%;
+        border-radius: 10px;
+      }
+
+      .slider-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(0, 0, 0, 0.6);
+        color: #fff;
+        border: none;
+        padding: 12px;
+        font-size: 28px;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 10;
+        transition: background-color 0.3s;
+      }
+
+      .slider-btn:hover {
+        background-color: rgba(0, 0, 0, 0.9);
+      }
+
+      .prev-btn {
+        left: 0;
+      }
+
+      .next-btn {
+        right: 0;
+      }
+
+
+      .stats-section {
+        padding: 60px 20px;
+        background: linear-gradient(145deg, #eaeaff, #f7f7ff);
+        text-align: center;
+      }
+
+      .stats-section h2 {
+        font-size: 40px;
+        margin-bottom: 30px;
+        color: #333;
+        font-weight: bold;
+      }
+
+      .stats-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 30px;
+      }
+
+      .stat-box,
+      .highlight-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        min-width: 220px;
+        text-align: center;
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .stat-box:hover,
+      .highlight-box:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+      }
+
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-8px);
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          opacity: 0.8;
+        }
+        50% {
+          transform: scale(1.1);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 0.8;
+        }
+      }
+
+      .circle {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #7f58ff, #6a0dad);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        margin-bottom: 10px;
+        font-size: 28px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        animation: bounce 2s infinite ease-in-out,
+          pulse 1.5s infinite ease-in-out;
+      }
+      .circle:hover {
+        transform: scale(1.1);
+        background: linear-gradient(135deg, #6a0dad, #7f58ff);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease, 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .circle:hover span {
+        animation: none;
+        color: #fff;
+      }
+
+      .highlight-box {
+        background: #f0f0ff;
+        padding: 30px;
+        border-radius: 25px;
+        min-width: 300px;
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+      }
+
+      .highlight-box h3 {
+        font-size: 42px;
+        margin-bottom: 10px;
+        color: #333;
+      }
+
+      .highlight-box p {
+        font-size: 18px;
+        color: #666;
+        margin-bottom: 15px;
+      }
+
+      .highlight-box button {
+        padding: 12px 28px;
+        background: #333;
+        color: #fff;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        font-size: 20px;
+        transition: background-color 0.3s ease;
+      }
+
+      .highlight-box button:hover {
+        background: #555;
+      }
+
+      @media (max-width: 1024px) {
+        .stats-container {
+          flex-wrap: wrap;
+          gap: 20px;
+        }
+
+        .circle {
+          width: 100px;
+          height: 100px;
+          font-size: 24px;
+        }
+
+        .highlight-box {
+          padding: 20px;
+          min-width: 250px;
+        }
+
+        .highlight-box button {
+          font-size: 18px;
+          padding: 10px 24px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .stats-container {
+          flex-direction: column;
+          gap: 20px;
+        }
+
+        .stat-box,
+        .highlight-box {
+          width: 100%;
+          max-width: 320px;
+          margin: 8px auto;
+        }
+
+        .highlight-box h3 {
+          font-size: 36px;
+        }
+
+        .highlight-box p {
+          font-size: 16px;
+        }
+
+        .highlight-box button {
+          font-size: 18px;
+          padding: 8px 20px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .stats-section h2 {
+          font-size: 32px;
+        }
+
+        .circle {
+          width: 80px;
+          height: 80px;
+          font-size: 20px;
+        }
+
+        .highlight-box h3 {
+          font-size: 28px;
+        }
+
+        .highlight-box p {
+          font-size: 14px;
+        }
+
+        .highlight-box button {
+          font-size: 16px;
+          padding: 6px 18px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .slide {
+          min-width: 200px;
+        }
+
+        .slider-btn {
+          font-size: 22px;
+          padding: 10px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .media-content {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .vertical-line {
+          display: none;
+        }
+
+        .media-logos a img {
+          height: 60px;
+        }
+
+        .media-text {
+          text-align: center;
+          margin-bottom: 20px;
+        }
+      }
+
+      /* Responsive Design */
+      @media (max-width: 1024px) {
+        .capabilities-container {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 20px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .capabilities-section h2 {
+          font-size: 32px;
+        }
+        .capabilities-container {
+          grid-template-columns: 1fr;
+          gap: 15px;
+        }
+        .capability-box {
+          margin: 10px auto;
+        }
+      }
+
+      @media (max-width: 768px) {
+        /* Navbar */
+        .navbar {
+          flex-direction: column;
+          align-items: center;
+          padding: 10px 20px;
+        }
+
+        .logo {
+          font-size: 28px;
+          margin-bottom: 10px;
+          text-align: center;
+        }
+
+        .nav-links {
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 10px;
+        }
+
+        .nav-links a {
+          font-size: 16px;
+          padding: 5px;
+        }
+
+        /* Hero Section */
+        .hero {
+          padding: 40px 10px;
+        }
+
+        .hero h1 {
+          font-size: 36px;
+        }
+
+        .hero p {
+          font-size: 16px;
+          margin: 10px 0;
+        }
+
+        /* What We Do Section */
+        .what-we-do h2 {
+          font-size: 28px;
+          text-align: center;
+        }
+
+        .what-we-do-content {
+          flex-direction: column;
+          gap: 20px;
+          text-align: center;
+          padding: 10px;
+        }
+
+        .what-we-do-left,
+        .what-we-do-right {
+          font-size: 18px;
+          text-align: center;
+        }
+
+        /* Features Section */
+        .features {
+          flex-direction: column;
+          align-items: center;
+          gap: 20px;
+        }
+
+        .feature-box {
+          width: 100%; /* Make the box take full width */
+          max-width: 380px;
+          height: auto; /* Adjust height for better fit */
+          margin: 10px 0;
+          padding: 20px;
+          transform: none;
+        }
+
+        .feature-box:hover {
+          height: auto;
+          transform: none;
+        }
+
+        .feature-box h3 {
+          font-size: 24px;
+        }
+
+        .feature-box p {
+          font-size: 14px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        /* Featured Section */
+        .featured-section {
+          flex-direction: column;
+          align-items: center;
+          padding: 20px;
+          gap: 20px;
+        }
+
+        .left-container,
+        .right-container {
+          width: 100%; /* Take full width */
+          padding: 15px;
+          text-align: center; /* Center the content for a balanced look */
+        }
+
+        .left-container h2,
+        .right-container h2 {
+          font-size: 28px;
+          margin-bottom: 10px;
+        }
+
+        .left-container p,
+        .right-container p {
+          font-size: 16px;
+          line-height: 1.5;
+          margin: 8px 0;
+        }
+
+        .left-container img,
+        .right-container img {
+          width: 100%; /* Ensure images fit within the container */
+          height: auto;
+          max-width: 400px; /* Prevent images from stretching too much */
+          margin: 10px 0;
+        }
+
+        .btn-container {
+          margin: 15px 0;
+          text-align: center;
+        }
+
+        .get-started-btn {
+          padding: 12px 24px;
+          font-size: 16px;
+          margin-top: 10px;
+        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <nav class="navbar">
-        <div class="logo">SULPHURIC BENCH</div>
-        <div class="nav-links">
-            <a href="#">Science News</a>
-            <a href="#">Blogs</a>
-            <a href="#">Q&A</a>
-            <a href="#">About Us</a>
-        </div>
+      <div class="logo">SULPHURIC BENCH</div>
+      <div class="nav-links">
+        <a href="#">Science News</a>
+        <a href="#">Blogs</a>
+        <a href="#">Q&A</a>
+        <a href="#">About Us</a>
+      </div>
     </nav>
     <section class="hero">
-        <h1>We make science accessible to everyone</h1>
-        <p>Together, we bring science enthusiasts, researchers, and innovators together to unlock new knowledge. Focused on fostering curiosity and discovery — we connect minds and spark ideas that drive progress.</p>
-        <a href="#" class="more-about">MORE ABOUT US</a>
+      <h1>We make science accessible to everyone</h1>
+      <p>
+        Together, we bring science enthusiasts, researchers, and innovators
+        together to unlock new knowledge. Focused on fostering curiosity and
+        discovery — we connect minds and spark ideas that drive progress.
+      </p>
+      <!-- From Uiverse.io by cssbuttons-io -->
+      <a class="fancy" href="#">
+        <span class="top-key"></span>
+        <span class="text">MORE ABOUT US</span>
+        <span class="bottom-key-1"></span>
+        <span class="bottom-key-2"></span>
+      </a>
     </section>
     <section class="what-we-do">
-        <h2>WHAT WE DO</h2>
-        <div class="what-we-do-content">
-            <div class="what-we-do-left">We make science accessible to everyone</div>
-            <div class="what-we-do-right">Together, we bring science enthusiasts, researchers, and innovators together to unlock new knowledge. Focused on fostering curiosity and discovery — we connect minds and spark ideas that drive progress.<br><a href="#" class="more-about">MORE ABOUT US</a></div>
+      <h2>WHAT WE DO</h2>
+      <div class="what-we-do-content">
+        <div class="what-we-do-left">
+          We make science accessible to everyone
         </div>
-        <div class="features">
-            <div class="feature-box">
-                <h3>First Feature</h3>
-                <p>This is the first feature description.</p>
-                <div class="feature-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                        <path d="M96 96c0-35.3 28.7-64 64-64l288 0c35.3 0 64 28.7 64 64l0 320c0 35.3-28.7 64-64 64L80 480c-44.2 0-80-35.8-80-80L0 128c0-17.7 14.3-32 32-32s32 14.3 32 32l0 272c0 8.8 7.2 16 16 16s16-7.2 16-16L96 96zm64 24l0 80c0 13.3 10.7 24 24 24l112 0c13.3 0 24-10.7 24-24l0-80c0-13.3-10.7-24-24-24L184 96c-13.3 0-24 10.7-24 24zm208-8c0 8.8 7.2 16 16 16l48 0c8.8 0 16-7.2 16-16s-7.2-16-16-16l-48 0c-8.8 0-16 7.2-16 16zm0 96c0 8.8 7.2 16 16 16l48 0c8.8 0 16-7.2 16-16s-7.2-16-16-16l-48 0c-8.8 0-16 7.2-16 16zM160 304c0 8.8 7.2 16 16 16l256 0c8.8 0 16-7.2 16-16s-7.2-16-16-16l-256 0c-8.8 0-16 7.2-16 16zm0 96c0 8.8 7.2 16 16 16l256 0c8.8 0 16-7.2 16-16s-7.2-16-16-16l-256 0c-8.8 0-16 7.2-16 16z"/>
-                    </svg>
-                </div>
-            </div>
-        
-            <div class="feature-box">
-                <h3>Second Feature</h3>
-                <p>This is the second feature description.</p>
-                <div class="feature-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
-                        <path d="M192 0c-41.8 0-77.4 26.7-90.5 64L64 64C28.7 64 0 92.7 0 128L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64l-37.5 0C269.4 26.7 233.8 0 192 0zm0 64a32 32 0 1 1 0 64 32 32 0 1 1 0-64zM105.8 229.3c7.9-22.3 29.1-37.3 52.8-37.3l58.3 0c34.9 0 63.1 28.3 63.1 63.1c0 22.6-12.1 43.5-31.7 54.8L216 328.4c-.2 13-10.9 23.6-24 23.6c-13.3 0-24-10.7-24-24l0-13.5c0-8.6 4.6-16.5 12.1-20.8l44.3-25.4c4.7-2.7 7.6-7.7 7.6-13.1c0-8.4-6.8-15.1-15.1-15.1l-58.3 0c-3.4 0-6.4 2.1-7.5 5.3l-.4 1.2c-4.4 12.5-18.2 19-30.6 14.6s-19-18.2-14.6-30.6l.4-1.2zM160 416a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
-                    </svg>
-                </div>
-            </div>
-        
-            <div class="feature-box">
-                <h3>Third Feature</h3>
-                <p>This is the third feature description.</p>
-                <div class="feature-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
-                        <path d="M64 64a64 64 0 1 1 128 0A64 64 0 1 1 64 64zM25.9 233.4C29.3 191.9 64 160 105.6 160l44.8 0c27 0 51 13.4 65.5 34.1c-2.7 1.9-5.2 4-7.5 6.3l-64 64c-21.9 21.9-21.9 57.3 0 79.2L192 391.2l0 72.8c0 26.5-21.5 48-48 48l-32 0c-26.5 0-48-21.5-48-48l0-115.7c-26.5-9.5-44.7-35.8-42.2-65.6l4.1-49.3zM448 64a64 64 0 1 1 128 0A64 64 0 1 1 448 64zM431.6 200.4c-2.3-2.3-4.9-4.4-7.5-6.3c14.5-20.7 38.6-34.1 65.5-34.1l44.8 0c41.6 0 76.3 31.9 79.7 73.4l4.1 49.3c2.5 29.8-15.7 56.1-42.2 65.6L576 464c0 26.5-21.5 48-48 48l-32 0c-26.5 0-48-21.5-48-48l0-72.8 47.6-47.6c21.9-21.9 21.9-57.3 0-79.2l-64-64zM272 240l0 32 96 0 0-32c0-9.7 5.8-18.5 14.8-22.2s19.3-1.7 26.2 5.2l64 64c9.4 9.4 9.4 24.6 0 33.9l-64 64c-6.9 6.9-17.2 8.9-26.2 5.2s-14.8-12.5-14.8-22.2l0-32-96 0 0 32c0 9.7-5.8 18.5-14.8 22.2s-19.3 1.7-26.2-5.2l-64-64c-9.4-9.4-9.4-24.6 0-33.9l64-64c6.9-6.9 17.2-8.9 26.2-5.2s14.8 12.5 14.8 22.2z"/>
-                    </svg>
-                </div>
-            </div>
+        <div class="what-we-do-right">
+          Together, we bring science enthusiasts, researchers, and innovators
+          together to unlock new knowledge. Focused on fostering curiosity and
+          discovery — we connect minds and spark ideas that drive progress.<br />
+          <button class="unique-btn">MORE ABOUT US</button>
         </div>
-        
+      </div>
+      <div class="features">
+        <div class="feature-box">
+          <h3>First Feature</h3>
+          <p>This is the first feature description.</p>
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+              <path
+                d="M96 96c0-35.3 28.7-64 64-64l288 0c35.3 0 64 28.7 64 64l0 320c0 35.3-28.7 64-64 64L80 480c-44.2 0-80-35.8-80-80L0 128c0-17.7 14.3-32 32-32s32 14.3 32 32l0 272c0 8.8 7.2 16 16 16s16-7.2 16-16L96 96zm64 24l0 80c0 13.3 10.7 24 24 24l112 0c13.3 0 24-10.7 24-24l0-80c0-13.3-10.7-24-24-24L184 96c-13.3 0-24 10.7-24 24zm208-8c0 8.8 7.2 16 16 16l48 0c8.8 0 16-7.2 16-16s-7.2-16-16-16l-48 0c-8.8 0-16 7.2-16 16zm0 96c0 8.8 7.2 16 16 16l48 0c8.8 0 16-7.2 16-16s-7.2-16-16-16l-48 0c-8.8 0-16 7.2-16 16zM160 304c0 8.8 7.2 16 16 16l256 0c8.8 0 16-7.2 16-16s-7.2-16-16-16l-256 0c-8.8 0-16 7.2-16 16zm0 96c0 8.8 7.2 16 16 16l256 0c8.8 0 16-7.2 16-16s-7.2-16-16-16l-256 0c-8.8 0-16 7.2-16 16z"
+              />
+            </svg>
+          </div>
+        </div>
+
+        <div class="feature-box">
+          <h3>Second Feature</h3>
+          <p>This is the second feature description.</p>
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+              <path
+                d="M192 0c-41.8 0-77.4 26.7-90.5 64L64 64C28.7 64 0 92.7 0 128L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-320c0-35.3-28.7-64-64-64l-37.5 0C269.4 26.7 233.8 0 192 0zm0 64a32 32 0 1 1 0 64 32 32 0 1 1 0-64zM105.8 229.3c7.9-22.3 29.1-37.3 52.8-37.3l58.3 0c34.9 0 63.1 28.3 63.1 63.1c0 22.6-12.1 43.5-31.7 54.8L216 328.4c-.2 13-10.9 23.6-24 23.6c-13.3 0-24-10.7-24-24l0-13.5c0-8.6 4.6-16.5 12.1-20.8l44.3-25.4c4.7-2.7 7.6-7.7 7.6-13.1c0-8.4-6.8-15.1-15.1-15.1l-58.3 0c-3.4 0-6.4 2.1-7.5 5.3l-.4 1.2c-4.4 12.5-18.2 19-30.6 14.6s-19-18.2-14.6-30.6l.4-1.2zM160 416a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"
+              />
+            </svg>
+          </div>
+        </div>
+
+        <div class="feature-box">
+          <h3>Third Feature</h3>
+          <p>This is the third feature description.</p>
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+              <path
+                d="M64 64a64 64 0 1 1 128 0A64 64 0 1 1 64 64zM25.9 233.4C29.3 191.9 64 160 105.6 160l44.8 0c27 0 51 13.4 65.5 34.1c-2.7 1.9-5.2 4-7.5 6.3l-64 64c-21.9 21.9-21.9 57.3 0 79.2L192 391.2l0 72.8c0 26.5-21.5 48-48 48l-32 0c-26.5 0-48-21.5-48-48l0-115.7c-26.5-9.5-44.7-35.8-42.2-65.6l4.1-49.3zM448 64a64 64 0 1 1 128 0A64 64 0 1 1 448 64zM431.6 200.4c-2.3-2.3-4.9-4.4-7.5-6.3c14.5-20.7 38.6-34.1 65.5-34.1l44.8 0c41.6 0 76.3 31.9 79.7 73.4l4.1 49.3c2.5 29.8-15.7 56.1-42.2 65.6L576 464c0 26.5-21.5 48-48 48l-32 0c-26.5 0-48-21.5-48-48l0-72.8 47.6-47.6c21.9-21.9 21.9-57.3 0-79.2l-64-64zM272 240l0 32 96 0 0-32c0-9.7 5.8-18.5 14.8-22.2s19.3-1.7 26.2 5.2l64 64c9.4 9.4 9.4 24.6 0 33.9l-64 64c-6.9 6.9-17.2 8.9-26.2 5.2s-14.8-12.5-14.8-22.2l0-32-96 0 0 32c0 9.7-5.8 18.5-14.8 22.2s-19.3 1.7-26.2-5.2l-64-64c-9.4-9.4-9.4-24.6 0-33.9l64-64c6.9-6.9 17.2-8.9 26.2-5.2s14.8 12.5 14.8 22.2z"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class="featured-section">
-        <div class="left-container">
-            <div class="btn-container">
-                <button class="tab-btn active" onclick="showContent('transparency')">Transparency</button>
-                <button class="tab-btn" onclick="showContent('team')">Team of Experts</button>
-                <button class="tab-btn" onclick="showContent('results')">Results</button>
-            </div>
-            <div class="content-box">
-                <p id="transparency" class="content active">
-                    A team of 15 will deliver interesting and necessary news in an easy-to-understand Bengali language every day. Our news is verified from various international journals and media outlets, with multiple sources provided at the end of each news article.
-                </p>
-                <p id="team" class="content">
-                    <strong>Friendly team of experts</strong><br>
-                    Our friendly team of experts is dedicated to guiding you through every step of your learning journey. With a wealth of knowledge and a passion for science, they create a supportive and engaging environment to ensure your success. Whether you’re a beginner or an advanced learner, our experts are here to help you every step of the way.
-                </p>
-                <p id="results" class="content">
-                    <strong>Choose a study partner that understands you</strong><br>
-                    We believe in the power of collaboration and mutual understanding in the pursuit of knowledge. Just as a study partner who truly comprehends your strengths and learning style can enhance your academic journey, Science Bee provides a platform where like-minded individuals, educators, and enthusiasts unite to foster scientific curiosity and growth.
-                </p>
-            </div>
+      <div class="left-container">
+        <div class="btn-container">
+          <button class="tab-btn active" onclick="showContent('transparency')">
+            Transparency
+          </button>
+          <button class="tab-btn" onclick="showContent('team')">
+            Team of Experts
+          </button>
+          <button class="tab-btn" onclick="showContent('results')">
+            Results
+          </button>
         </div>
-        <div class="right-container">
-            <h2>Country's first science news in the mother tongue</h2>
-            <p>This is not a conventional science blog site; we have created a news platform where you will get the latest information from the world of science before anyone else. Along with science, there will be topics like technology, health and medicine, environment, entrepreneurship, and various other subjects.</p>
-            <p><strong>800+ Latest News</strong></p>
-            <button>
-                <p>Get Started</p>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-width="4"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M14 5l7 7m0 0l-7 7m7-7H3"
-                  ></path>
-                </svg>
-              </button>
-              
+        <div class="content-box">
+          <p id="transparency" class="content active">
+            A team of 15 will deliver interesting and necessary news in an
+            easy-to-understand Bengali language every day. Our news is verified
+            from various international journals and media outlets, with multiple
+            sources provided at the end of each news article.
+          </p>
+          <p id="team" class="content">
+            <strong>Friendly team of experts</strong><br />
+            Our friendly team of experts is dedicated to guiding you through
+            every step of your learning journey. With a wealth of knowledge and
+            a passion for science, they create a supportive and engaging
+            environment to ensure your success. Whether you’re a beginner or an
+            advanced learner, our experts are here to help you every step of the
+            way.
+          </p>
+          <p id="results" class="content">
+            <strong>Choose a study partner that understands you</strong><br />
+            We believe in the power of collaboration and mutual understanding in
+            the pursuit of knowledge. Just as a study partner who truly
+            comprehends your strengths and learning style can enhance your
+            academic journey, Science Bee provides a platform where like-minded
+            individuals, educators, and enthusiasts unite to foster scientific
+            curiosity and growth.
+          </p>
         </div>
+      </div>
+      <div class="right-container">
+        <h2>Country's first science news in the mother tongue</h2>
+        <p>
+          This is not a conventional science blog site; we have created a news
+          platform where you will get the latest information from the world of
+          science before anyone else. Along with science, there will be topics
+          like technology, health and medicine, environment, entrepreneurship,
+          and various other subjects.
+        </p>
+        <p><strong>800+ Latest News</strong></p>
+        <button>
+          <p>Get Started</p>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="4"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M14 5l7 7m0 0l-7 7m7-7H3"
+            ></path>
+          </svg>
+        </button>
+      </div>
     </section>
-    
+
+    <section class="capabilities-section">
+      <h3>OUR CAPABILITIES</h3>
+      <h2>Data-driven, Knowledge-centric Science Services</h2>
+      <div class="capabilities-container">
+        <div class="capability-box">
+          <div class="icon">💬</div>
+          <h4>Community Learning</h4>
+          <p>
+            Join a vibrant community of science enthusiasts and experts to share
+            knowledge, collaborate, and foster a love for discovery.
+          </p>
+          <a href="#">LEARN MORE</a>
+        </div>
+        <div class="capability-box">
+          <div class="icon">🔄</div>
+          <h4>Fact Checking</h4>
+          <p>
+            Ensure the reliability of information with our rigorous
+            fact-checking process, keeping you up to date with accurate and
+            trustworthy science news.
+          </p>
+          <a href="#">LEARN MORE</a>
+        </div>
+        <div class="capability-box">
+          <div class="icon">✉️</div>
+          <h4>Bite-Sized News</h4>
+          <p>
+            Stay informed with the latest breakthroughs in science, delivered in
+            quick, easy-to-digest updates perfect for your busy lifestyle.
+          </p>
+          <a href="#">LEARN MORE</a>
+        </div>
+        <div class="capability-box">
+          <div class="icon">🚀</div>
+          <h4>E-books & Resources</h4>
+          <p>
+            Access a wide range of e-books and scientific resources to deepen
+            your knowledge and support your learning journey.
+          </p>
+          <a href="#">LEARN MORE</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="mainstream-media-section">
+      <div class="media-content">
+        <div class="media-text">
+          <h2>Mainstream Media</h2>
+          <p>
+            We are proud to be featured in leading media outlets that recognize
+            our commitment to science and knowledge.
+          </p>
+        </div>
+        <div class="vertical-line"></div>
+        <div class="media-logos">
+          <a href="#" target="_blank"><img src="media1.png" alt="Media 1" /></a>
+          <a href="#" target="_blank"><img src="media2.png" alt="Media 2" /></a>
+          <a href="#" target="_blank"><img src="media3.png" alt="Media 3" /></a>
+          <a href="#" target="_blank"><img src="media4.png" alt="Media 4" /></a>
+          <a href="#" target="_blank"><img src="media4.png" alt="Media 4" /></a>
+          <a href="#" target="_blank"><img src="media4.png" alt="Media 4" /></a>
+          <a href="#" target="_blank"><img src="media4.png" alt="Media 4" /></a>
+          <a href="#" target="_blank"><img src="media4.png" alt="Media 4" /></a>
+        </div>
+      </div>
+    </section>
+    <section class="our-books-section">
+      <h2>Our Books</h2>
+      <p>Collect our best refined eBooks from our collection.</p>
+      <div class="slider-container">
+        <button class="slider-btn prev-btn">&#10094;</button>
+        <div class="books-slider">
+          <div class="slide">
+            <img
+              src="/images/2f1e75a2da32444bc7e97fa2db7cbb2d.jpg"
+              alt="Book 1"
+            />
+          </div>
+          <div class="slide">
+            <img
+              src="/images/2f1e75a2da32444bc7e97fa2db7cbb2d.jpg"
+              alt="Book 2"
+            />
+          </div>
+          <div class="slide">
+            <img
+              src="/images/2f1e75a2da32444bc7e97fa2db7cbb2d.jpg"
+              alt="Book 3"
+            />
+          </div>
+          <div class="slide">
+            <img
+              src="/images/2f1e75a2da32444bc7e97fa2db7cbb2d.jpg"
+              alt="Book 4"
+            />
+          </div>
+          <div class="slide">
+            <img
+              src="/images/2f1e75a2da32444bc7e97fa2db7cbb2d.jpg"
+              alt="Book 5"
+            />
+          </div>
+        </div>
+        <button class="slider-btn next-btn">&#10095;</button>
+      </div>
+    </section>
+
+    <section class="stats-section">
+      <h2>The proof is in the numbers</h2>
+      <div class="stats-container">
+        <div class="stat-box">
+          <div class="circle">
+            <h3>50+</h3>
+            <span class="arrow">&#8593;</span>
+          </div>
+          <p>Competitions organised till date</p>
+        </div>
+
+        <div class="stat-box">
+          <div class="circle">
+            <h3>40+</h3>
+            <span class="arrow">&#8593;</span>
+          </div>
+          <p>Team Members</p>
+        </div>
+
+        <div class="stat-box">
+          <div class="circle">
+            <h3>1.5M+</h3>
+            <span class="arrow">&#8593;</span>
+          </div>
+          <p>Students connected across social media</p>
+        </div>
+
+        <div class="highlight-box">
+          <h3>318,000+</h3>
+          <p>Registered members so far...</p>
+          <button>QUESTIONS? →</button>
+        </div>
+      </div>
+    </section>
+
     <script>
-        function showContent(contentId) {
-            const contents = document.querySelectorAll('.content');
-            const buttons = document.querySelectorAll('.tab-btn');
-            
-            contents.forEach(content => content.classList.remove('active'));
-            buttons.forEach(btn => btn.classList.remove('active'));
-            
-            document.getElementById(contentId).classList.add('active');
-            event.currentTarget.classList.add('active');
-        }
+      function showContent(contentId) {
+        const contents = document.querySelectorAll(".content");
+        const buttons = document.querySelectorAll(".tab-btn");
+
+        contents.forEach((content) => content.classList.remove("active"));
+        buttons.forEach((btn) => btn.classList.remove("active"));
+
+        document.getElementById(contentId).classList.add("active");
+        event.currentTarget.classList.add("active");
+      }
+
+      const slider = document.querySelector(".books-slider");
+      const slides = document.querySelectorAll(".slide");
+      const prevBtn = document.querySelector(".prev-btn");
+      const nextBtn = document.querySelector(".next-btn");
+      let currentIndex = 0;
+
+      function updateSlider() {
+        const offset = -currentIndex * (slides[0].offsetWidth + 10); // Adjusted for spacing
+        slider.style.transform = `translateX(${offset}px)`;
+      }
+
+      prevBtn.addEventListener("click", () => {
+        currentIndex = currentIndex > 0 ? currentIndex - 1 : slides.length - 1;
+        updateSlider();
+      });
+
+      nextBtn.addEventListener("click", () => {
+        currentIndex = currentIndex < slides.length - 1 ? currentIndex + 1 : 0;
+        updateSlider();
+      });
     </script>
-    
-    
-    
-</body>
+  </body>
 </html>
