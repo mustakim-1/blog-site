@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Publish Article | Sulphuric Bench</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --bg-primary: #F4F7FE; --bg-secondary: #FFFFFF; --accent-color: #4F46E5;
+            --accent-color-light: #6366F1; --text-primary: #111827; --text-secondary: #374151;
+            --text-muted: #6B7280; --border-color: #E5E7EB; --transition-speed: 0.3s;
+        }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-primary); margin: 0; padding-top: 120px; }
+        .container { max-width: 800px; margin: 0 auto; padding: 40px; background: var(--bg-secondary); border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        h1, h2 { font-family: 'Bebas Neue', sans-serif; color: var(--text-primary); text-align: center; font-size: 48px; }
+        .publish-form { display: grid; gap: 20px; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-weight: 500; margin-bottom: 8px; color: var(--text-secondary); }
+        .form-group input, .form-group select, .form-group textarea {
+            padding: 12px; border: 1px solid var(--border-color); border-radius: 8px;
+            font-size: 16px; font-family: 'Poppins', sans-serif;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        /* Style file input differently */
+        input[type="file"] { padding: 10px; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none; border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+        textarea { resize: vertical; min-height: 120px; }
+        .btn { display: inline-block; padding: 14px 30px; font-size: 1em; font-family: "Poppins", sans-serif; font-weight: 700; text-decoration: none; color: #fff; background: linear-gradient(90deg, var(--accent-color), var(--accent-color-light)); border: none; border-radius: 50px; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.2); transition: all var(--transition-speed) ease; cursor: pointer; width: 100%; margin-top: 10px; }
+        .btn:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 6px 20px rgba(79, 70, 229, 0.3); }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Publish a New Article</h1>
+        <form id="publishForm" class="publish-form">
+            <div class="form-group">
+                <label for="authorName">Author Name</label>
+                <input type="text" id="authorName" required>
+            </div>
+            <div class="form-group">
+                <label for="articleTitle">Article Title</label>
+                <input type="text" id="articleTitle" required>
+            </div>
+            <div class="form-group">
+                <label for="articleCategory">Category</label>
+                <select id="articleCategory" required>
+                    <option value="Biology">Biology</option>
+                    <option value="Physics">Physics</option>
+                    <option value="Technology">Technology</option>
+                    <option value="Health">Health</option>
+                </select>
+            </div>
+            <!-- UPDATED THIS INPUT -->
+            <div class="form-group">
+                <label for="thumbnailFile">Thumbnail Image</label>
+                <input type="file" id="thumbnailFile" accept="image/png, image/jpeg, image/webp" required>
+            </div>
+            <div class="form-group">
+                <label for="articleDescription">Description (Excerpt)</label>
+                <textarea id="articleDescription" required></textarea>
+            </div>
+            <button type="submit" class="btn">Publish Article</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('publishForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const thumbnailInput = document.getElementById('thumbnailFile');
+            const file = thumbnailInput.files[0];
+
+            if (file) {
+                // FileReader is a built-in browser tool to read files
+                const reader = new FileReader();
+
+                // This event fires when the file has been successfully read
+                reader.onload = function(e) {
+                    // e.target.result contains the Base64 data URL of the image
+                    const thumbnailDataUrl = e.target.result;
+
+                    // Now we can create the article object and save it
+                    const newArticle = {
+                        id: Date.now(),
+                        author: document.getElementById('authorName').value,
+                        title: document.getElementById('articleTitle').value,
+                        category: document.getElementById('articleCategory').value,
+                        thumbnail: thumbnailDataUrl, // Use the data URL here
+                        description: document.getElementById('articleDescription').value,
+                        publishedAt: new Date().toISOString()
+                    };
+
+                    let articles = JSON.parse(localStorage.getItem('articles')) || [];
+                    articles.unshift(newArticle);
+                    localStorage.setItem('articles', JSON.stringify(articles));
+
+                    alert('Article published successfully!');
+                    window.location.href = 'news.html';
+                };
+
+                // This command starts the reading process
+                reader.readAsDataURL(file);
+
+            } else {
+                alert('Please select a thumbnail image.');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Science News | Sulphuric Bench</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
+    <!-- Your existing CSS styles go here, no changes needed -->
+    <style>
+      :root {
+        /* Palette from index.html */
+        --bg-primary: #F4F7FE; --bg-secondary: #FFFFFF; --accent-color: #4F46E5;
+        --accent-color-light: #6366F1; --text-primary: #111827; --text-secondary: #374151;
+        --text-muted: #6B7280; --border-color: #E5E7EB; --transition-speed: 0.3s;
+      }
+      *, *::before, *::after { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0; font-family: "Poppins", sans-serif; background-color: var(--bg-primary);
+        color: var(--text-secondary); -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale; overflow-x: hidden; cursor: none;
+      }
+      .cursor-dot, .cursor-outline { pointer-events: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 50%; z-index: 9999; opacity: 0; transition: opacity 0.3s ease-in-out, transform 0.2s ease-out; }
+      .cursor-dot { width: 8px; height: 8px; background-color: var(--accent-color); }
+      .cursor-outline { width: 40px; height: 40px; border: 2px solid var(--accent-color); transition-duration: 0.3s; }
+      body:hover .cursor-dot, body:hover .cursor-outline { opacity: 1; }
+      .cursor-grow { transform: translate(-50%, -50%) scale(1.5); border-color: var(--accent-color-light); }
+      @media (pointer: coarse) { body { cursor: auto; } .cursor-dot, .cursor-outline { display: none; } }
+      h1, h2, h3, h4 { font-family: "Bebas Neue", sans-serif; letter-spacing: 1.5px; color: var(--text-primary); }
+      section { padding: 100px 40px; position: relative; }
+      .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+      .animate-on-scroll { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+      .animate-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
+      .btn { display: inline-block; padding: 14px 30px; font-size: 1em; font-family: "Poppins", sans-serif; font-weight: 700; text-decoration: none; color: #fff; background: linear-gradient(90deg, var(--accent-color), var(--accent-color-light)); border: none; border-radius: 50px; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.2); transition: all var(--transition-speed) ease; }
+      .btn:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 6px 20px rgba(79, 70, 229, 0.3); }
+      .navbar { display: flex; justify-content: space-between; align-items: center; background-color: rgba(255, 255, 255, 0.85); padding: 15px 40px; position: fixed; top: 0; width: 100%; z-index: 1000; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); transition: top 0.4s ease-in-out, box-shadow 0.3s ease; }
+      .logo { font-size: 32px; font-family: "Bebas Neue", sans-serif; color: var(--text-primary); letter-spacing: 2px; text-decoration: none; }
+      .nav-links { display: flex; gap: 35px; }
+      .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 18px; font-weight: 500; position: relative; transition: color var(--transition-speed) ease; }
+      .news-hero { padding-top: 180px; padding-bottom: 80px; text-align: center; }
+      .news-hero h1 { font-size: 72px; margin-bottom: 20px; }
+      .news-hero p { font-size: 20px; max-width: 700px; margin: 0 auto 30px; color: var(--text-secondary); line-height: 1.7; }
+      #addArticleBtn { background: var(--text-secondary); }
+      .news-content { background-color: var(--bg-secondary); padding-top: 0; }
+      .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; }
+      .article-card { background-color: var(--bg-primary); border-radius: 16px; overflow: hidden; border: 1px solid var(--border-color); text-decoration: none; color: inherit; display: flex; flex-direction: column; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+      .article-card:hover { transform: translateY(-8px); box-shadow: 0 12px 25px rgba(79, 70, 229, 0.1); }
+      .card-img img { width: 100%; aspect-ratio: 16/10; object-fit: cover; }
+      .card-content { padding: 25px; display: flex; flex-direction: column; flex-grow: 1; }
+      .article-category { display: inline-block; padding: 6px 12px; background-color: var(--accent-color-light); color: #fff; font-size: 14px; font-weight: 700; border-radius: 50px; margin-bottom: 15px; text-transform: uppercase; align-self: flex-start;}
+      .card-content h3 { font-size: 24px; margin: 10px 0; line-height: 1.3; }
+      .card-content .article-excerpt { font-size: 15px; line-height: 1.6; color: var(--text-muted); flex-grow: 1;}
+      .article-meta { font-size: 14px; color: var(--text-muted); margin-top: 15px; }
+      .footer { /* Your existing footer styles */ }
+    </style>
+  </head>
+<body>
+
+    <div class="cursor-outline"></div>
+    <div class="cursor-dot"></div>
+
+    <header>
+        <nav class="navbar">
+            <a href="index.html" class="logo">SULPHURIC BENCH</a>
+            <div class="nav-links">
+                <a href="news.html">Science News</a> <a href="#">Blogs</a>
+                <a href="index.html#journey">Our Journey</a> <a href="#">FAQ</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="news-hero">
+            <div class="container animate-on-scroll">
+                <h1>Latest Science News</h1>
+                <p>Stay informed with the latest breakthroughs, curated by our team of passionate authors.</p>
+                <button id="addArticleBtn" class="btn">Add Article</button>
+            </div>
+        </section>
+
+        <section class="news-content">
+            <div class="container">
+                <!-- The news grid will be populated by JavaScript -->
+                <div id="newsGrid" class="news-grid">
+                    <!-- Example of a card, will be generated dynamically -->
+                    <!-- <a href="#" class="article-card">...</a> -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+       <!-- (Your footer HTML goes here) -->
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            // --- Call all initialization functions ---
+            initNavbar();
+            initCustomCursor();
+            initAddArticleButton();
+            loadArticles();
+            initScrollAnimations(); // Initial run for static content
+
+            function loadArticles() {
+                const newsGrid = document.getElementById('newsGrid');
+                const articles = JSON.parse(localStorage.getItem('articles')) || [];
+
+                if (articles.length === 0) {
+                    newsGrid.innerHTML = '<p style="text-align: center; font-size: 18px; color: var(--text-muted);">No articles have been published yet. Click "Add Article" to get started!</p>';
+                    return;
+                }
+
+                let articlesHTML = '';
+                articles.forEach(article => {
+                    articlesHTML += createArticleCard(article);
+                });
+                newsGrid.innerHTML = articlesHTML;
+
+                // IMPORTANT: Re-initialize animations AND cursor for the newly added dynamic cards
+                initScrollAnimations();
+                initCustomCursor(); 
+            }
+
+            function createArticleCard(article) {
+                const excerpt = article.description ? article.description.substring(0, 120) + '...' : '';
+                const publishedDate = new Date(article.publishedAt).toLocaleDateString('en-US', {
+                    year: 'numeric', month: 'long', day: 'numeric'
+                });
+
+                return `
+                    <a href="#" class="article-card animate-on-scroll">
+                        <div class="card-img"><img src="${article.thumbnail}" alt="${article.title}"></div>
+                        <div class="card-content">
+                            <span class="article-category">${article.category}</span>
+                            <h3>${article.title}</h3>
+                            <p class="article-excerpt">${excerpt}</p>
+                            <p class="article-meta">By ${article.author} • ${publishedDate}</p>
+                        </div>
+                    </a>
+                `;
+            }
+
+            function initAddArticleButton() {
+                const addBtn = document.getElementById('addArticleBtn');
+                if (!addBtn) return;
+
+                addBtn.addEventListener('click', () => {
+                    const password = prompt('Enter admin password to add an article:');
+                    
+                    if (password === 'admin123') {
+                        window.location.href = 'publish.html';
+                    } else if (password !== null && password !== "") { 
+                        alert('Incorrect password.');
+                    }
+                });
+            }
+
+            function initNavbar() {
+                const navbar = document.querySelector('.navbar');
+                if (!navbar) return;
+                let lastScrollY = window.scrollY;
+                window.addEventListener('scroll', () => {
+                    navbar.classList.toggle('navbar-hidden', lastScrollY < window.scrollY && window.scrollY > 100);
+                    navbar.classList.toggle('navbar-scrolled', window.scrollY > 10);
+                    lastScrollY = window.scrollY;
+                });
+            }
+            
+            function initCustomCursor() {
+                const cursorDot = document.querySelector('.cursor-dot');
+                const cursorOutline = document.querySelector('.cursor-outline');
+                if (!cursorDot || !cursorOutline) return;
+                
+                window.addEventListener('mousemove', e => {
+                    const { clientX: posX, clientY: posY } = e;
+                    cursorDot.style.left = `${posX}px`;
+                    cursorDot.style.top = `${posY}px`;
+                    cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 500, fill: "forwards" });
+                });
+
+                // This function now needs to be re-runnable, so we select all interactive elements on the page
+                const interactiveElements = document.querySelectorAll('a, button, .article-card');
+                interactiveElements.forEach(el => {
+                    // To prevent adding listeners multiple times, we can add a flag
+                    if (!el.hasAttribute('data-cursor-listener')) {
+                        el.addEventListener('mouseenter', () => cursorOutline.classList.add('cursor-grow'));
+                        el.addEventListener('mouseleave', () => cursorOutline.classList.remove('cursor-grow'));
+                        el.setAttribute('data-cursor-listener', 'true');
+                    }
+                });
+            }
+
+            function initScrollAnimations() {
+                const elementsToAnimate = document.querySelectorAll('.animate-on-scroll:not(.is-visible)');
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        // THIS IS THE CORRECTED LINE
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1 });
+
+                elementsToAnimate.forEach(el => observer.observe(el));
+            }
+        });
+    </script>
+
+</body>
+</html>
