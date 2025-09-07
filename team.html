@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,17 +10,40 @@
     />
     <style>
       :root {
-        /* Palette from index.html */
-        --bg-primary: #F4F7FE;
-        --bg-secondary: #FFFFFF;
-        --accent-color: #4F46E5;
-        --accent-color-light: #6366F1;
-        --text-primary: #111827;
-        --text-secondary: #374151;
-        --text-muted: #6B7280;
-        --border-color: #E5E7EB;
+        /* DARK THEME (DEFAULT) */
+        --bg-primary: #0A192F;
+        --bg-secondary: #112240;
+        --bg-navbar: rgba(10, 25, 47, 0.85);
+        --accent-color: #00BFFF;
+        --accent-color-light: #89ddff;
+        --text-primary: #E6F1FF;
+        --text-secondary: #a8b2d1;
+        --text-muted: #8892B0;
+        --text-on-accent: #0A192F;
+        --border-color: #233554;
+        --shadow-color: rgba(0, 191, 255, 0.1);
+        --shadow-btn: rgba(0, 191, 255, 0.2);
+        --star-color: rgba(204, 214, 246, 0.1);
         --transition-speed: 0.3s;
       }
+      
+      html[data-theme="light"] {
+        /* NEW LIGHT THEME PALETTE */
+        --bg-primary: #F9FAFB;       
+        --bg-secondary: #FFFFFF;      
+        --bg-navbar: rgba(249, 250, 251, 0.85);
+        --accent-color: #4F46E5;      
+        --accent-color-light: #A5B4FC; 
+        --text-primary: #1F2937;      
+        --text-secondary: #374151;    
+        --text-muted: #6B7280;        
+        --text-on-accent: #FFFFFF;
+        --border-color: #E5E7EB;      
+        --shadow-color: rgba(79, 70, 229, 0.1);
+        --shadow-btn: rgba(79, 70, 229, 0.2);
+        --star-color: rgba(31, 41, 55, 0.08);
+      }
+      
       *, *::before, *::after { box-sizing: border-box; }
       html { scroll-behavior: smooth; }
       body {
@@ -32,6 +55,13 @@
         -moz-osx-font-smoothing: grayscale;
         overflow-x: hidden;
         cursor: none;
+        transition: background-color var(--transition-speed), color var(--transition-speed);
+        /* Starry background effect */
+        background-image:
+          radial-gradient(circle, var(--star-color) 1px, transparent 1.5px),
+          radial-gradient(circle, var(--star-color) 1px, transparent 1.5px);
+        background-size: 100px 100px, 250px 250px;
+        background-position: 0 0, 75px 75px;
       }
       /* --- Custom Cursor --- */
       .cursor-dot, .cursor-outline {
@@ -53,37 +83,45 @@
         .cursor-dot, .cursor-outline { display: none; }
       }
 
-      /* Global Styles from index.html */
+      /* Global Styles */
       h1, h2, h3, h4 {
         font-family: "Bebas Neue", sans-serif;
         letter-spacing: 1.5px;
         color: var(--text-primary);
+        transition: color var(--transition-speed);
       }
       section { padding: 100px 40px; position: relative; }
       .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
       .animate-on-scroll { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
       .animate-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
-      .btn { display: inline-block; padding: 14px 30px; font-size: 1em; font-family: "Poppins", sans-serif; font-weight: 700; text-decoration: none; color: #fff; background: linear-gradient(90deg, var(--accent-color), var(--accent-color-light)); border: none; border-radius: 50px; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.2); transition: all var(--transition-speed) ease; }
-      .btn:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 6px 20px rgba(79, 70, 229, 0.3); }
+      .btn { display: inline-block; padding: 14px 30px; font-size: 1em; font-family: "Poppins", sans-serif; font-weight: 700; text-decoration: none; color: var(--text-on-accent); background: var(--accent-color); border: none; border-radius: 50px; box-shadow: 0 4px 15px var(--shadow-btn); transition: all var(--transition-speed) ease; cursor: pointer; }
+      .btn:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 6px 20px var(--shadow-btn); background: var(--accent-color-light); }
 
-      /* --- Reused Navbar and Footer from index.html --- */
-      .navbar { display: flex; justify-content: space-between; align-items: center; background-color: rgba(255, 255, 255, 0.85); padding: 15px 40px; position: fixed; top: 0; width: 100%; z-index: 1000; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); transition: top 0.4s ease-in-out, box-shadow 0.3s ease; }
+      /* --- Navbar and Footer --- */
+      .navbar { display: flex; justify-content: space-between; align-items: center; background-color: var(--bg-navbar); padding: 15px 40px; position: fixed; top: 0; width: 100%; z-index: 1000; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); transition: top 0.4s ease-in-out, box-shadow 0.3s ease, background-color var(--transition-speed); }
       .navbar-hidden { top: -100px; }
-      .navbar-scrolled { box-shadow: 0 2px 15px rgba(0,0,0,0.05); }
       .logo { font-size: 32px; font-family: "Bebas Neue", sans-serif; color: var(--text-primary); letter-spacing: 2px; text-decoration: none; }
       .nav-links { display: flex; gap: 35px; }
-      .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 18px; font-weight: 500; position: relative; transition: color var(--transition-speed) ease; }
+      .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 18px; font-weight: 500; position: relative; transition: color var(--transition-speed) ease; }
       .nav-links a::after { content: ""; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px; background-color: var(--accent-color); transition: width var(--transition-speed) ease; }
-      .nav-links a:hover { color: var(--text-primary); }
+      .nav-links a:hover { color: var(--accent-color); }
       .nav-links a:hover::after { width: 100%; }
-      .hamburger, .mobile-nav { display: none; } /* Simplified for brevity, reuse if needed */
+      .hamburger, .mobile-nav { display: none; }
+
+      /* NEW THEME TOGGLE BUTTON */
+      .nav-controls { display: flex; align-items: center; gap: 15px; }
+      .theme-toggle { background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 5px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: color 0.3s, background-color 0.3s; }
+      .theme-toggle:hover { color: var(--text-primary); background-color: var(--border-color); }
+      .theme-toggle .moon-icon, .theme-toggle .sun-icon { display: none; }
+      html[data-theme="dark"] .theme-toggle .sun-icon { display: block; }
+      html[data-theme="light"] .theme-toggle .moon-icon { display: block; }
       
       /* --- Team Page Specific Styles --- */
       .team-hero {
         padding-top: 180px;
         padding-bottom: 80px;
         text-align: center;
-        background-color: var(--bg-primary);
+        background-color: transparent;
       }
       .team-hero h1 {
         font-size: 72px;
@@ -98,7 +136,7 @@
       }
 
       .team-grid-section {
-        background-color: var(--bg-secondary);
+        background-color: transparent;
       }
       .team-grid {
         display: grid;
@@ -106,17 +144,17 @@
         gap: 40px;
       }
       .team-card {
-        background-color: var(--bg-primary);
+        background-color: var(--bg-secondary);
         border-radius: 16px;
         overflow: hidden;
         text-align: center;
         border: 1px solid var(--border-color);
-        box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, background-color var(--transition-speed);
       }
       .team-card:hover {
         transform: translateY(-8px);
-        box-shadow: 0 12px 25px rgba(79, 70, 229, 0.1);
+        box-shadow: 0 12px 25px var(--shadow-color);
       }
       .team-card-image {
         width: 100%;
@@ -141,12 +179,18 @@
         font-family: 'Poppins', sans-serif;
         font-weight: 700;
         letter-spacing: 0.5px;
+        color: var(--text-primary);
+        transition: color 0.3s ease;
+      }
+      .team-card:hover h3 {
+        color: var(--accent-color);
       }
       .team-role {
         font-size: 16px;
         color: var(--accent-color);
         font-weight: 500;
         margin: 0 0 15px 0;
+        transition: color var(--transition-speed);
       }
       .team-bio {
         font-size: 15px;
@@ -172,7 +216,7 @@
       }
       
       .join-us-section {
-          background: var(--bg-primary);
+          background: transparent;
           text-align: center;
           border-top: 1px solid var(--border-color);
       }
@@ -186,16 +230,16 @@
           margin: 0 auto 30px auto;
       }
       
-      .site-footer { background-color: #111827; color: #9ca3b0; padding: 60px 40px; font-size: 15px; }
+      .site-footer { background-color: transparent; color: var(--text-muted); padding: 60px 40px; font-size: 15px; border-top: 1px solid var(--border-color); }
       .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
-      .footer-column .logo { color: #fff; margin-bottom: 15px; display: block; }
+      .footer-column .logo { color: var(--text-primary); margin-bottom: 15px; display: block; }
       .footer-column p { line-height: 1.7; margin-bottom: 20px; }
-      .footer-column h4 { color: #fff; font-family: 'Poppins', sans-serif; font-size: 18px; margin-bottom: 15px; }
+      .footer-column h4 { color: var(--text-primary); font-family: 'Poppins', sans-serif; font-size: 18px; margin-bottom: 15px; }
       .footer-links { list-style: none; padding: 0; margin: 0; }
       .footer-links li { margin-bottom: 10px; }
-      .footer-links a { color: #9ca3b0; text-decoration: none; transition: color var(--transition-speed) ease; }
+      .footer-links a { color: var(--text-muted); text-decoration: none; transition: color var(--transition-speed) ease; }
       .footer-links a:hover { color: var(--accent-color); }
-      .footer-bottom { border-top: 1px solid #374151; padding-top: 30px; text-align: center; }
+      .footer-bottom { border-top: 1px solid var(--border-color); padding-top: 30px; text-align: center; }
 
       @media (max-width: 768px) {
         section { padding: 60px 20px; }
@@ -214,10 +258,17 @@
       <nav class="navbar">
         <a href="index.html" class="logo">SULPHURIC BENCH</a>
         <div class="nav-links">
-          <a href="#">Science News</a>
+          <a href="news.html">Science News</a>
           <a href="#">Blogs</a>
           <a href="index.html#journey">Our Journey</a>
           <a href="#">FAQ</a>
+        </div>
+        <!-- NEW: Added nav-controls wrapper and theme toggle button -->
+        <div class="nav-controls">
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            </button>
         </div>
       </nav>
     </header>
@@ -345,13 +396,6 @@
         </div>
       </section>
       
-      <section class="join-us-section">
-        <div class="container animate-on-scroll">
-            <h2>Want to Join Our Mission?</h2>
-            <p>We're always looking for talented individuals who are passionate about science and communication. If you believe in our vision, we'd love to hear from you.</p>
-            <a href="#" class="btn">VIEW OPEN POSITIONS</a>
-        </div>
-      </section>
 
     </main>
 
@@ -359,7 +403,7 @@
       <div class="container">
         <div class="footer-grid">
           <div class="footer-column"><a href="index.html" class="logo">SULPHURIC BENCH</a><p>Making science accessible to everyone, everywhere.</p></div>
-          <div class="footer-column"><h4>Explore</h4><ul class="footer-links"><li><a href="#">Science News</a></li><li><a href="#">Technology</a></li><li><a href="#">Health</a></li><li><a href="#">Environment</a></li></ul></div>
+          <div class="footer-column"><h4>Explore</h4><ul class="footer-links"><li><a href="news.html">Science News</a></li><li><a href="#">Technology</a></li><li><a href="#">Health</a></li><li><a href="#">Environment</a></li></ul></div>
           <div class="footer-column"><h4>About</h4><ul class="footer-links"><li><a href="team.html">Our Team</a></li><li><a href="#">Contribute</a></li><li><a href="#">Contact</a></li></ul></div>
           <div class="footer-column"><h4>Legal</h4><ul class="footer-links"><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li></ul></div>
         </div>
@@ -371,9 +415,35 @@
       document.addEventListener('DOMContentLoaded', function () {
         
         // --- Initialize site functionalities ---
+        initThemeToggle(); // NEW: Initialize the theme toggle
         initNavbar();
         initCustomCursor();
         initScrollAnimations();
+
+        /**
+         * NEW: Initializes the theme toggle functionality.
+         */
+        function initThemeToggle() {
+            const toggleButton = document.getElementById('theme-toggle');
+            if (!toggleButton) return;
+
+            const applyTheme = (theme) => {
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+            };
+            
+            // Determine initial theme based on localStorage or system preference
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+            applyTheme(initialTheme);
+            
+            toggleButton.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                applyTheme(newTheme);
+            });
+        }
 
         function initNavbar() {
             const navbar = document.querySelector('.navbar');

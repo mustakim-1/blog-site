@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Article | Sulphuric Bench</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --bg-primary: #F4F7FE; --bg-secondary: #FFFFFF; --accent-color: #4F46E5;
+            --accent-color-light: #6366F1; --text-primary: #111827; --text-secondary: #374151;
+            --text-muted: #6B7280; --border-color: #E5E7EB; --transition-speed: 0.3s;
+        }
+        *, *::before, *::after { box-sizing: border-box; }
+        body { margin: 0; font-family: "Poppins", sans-serif; background-color: var(--bg-primary); color: var(--text-secondary); cursor: none; }
+        .cursor-dot, .cursor-outline { /* Your cursor styles */ }
+        .navbar { /* Your navbar styles */ }
+        .logo, .nav-links { /* Your navbar styles */ }
+        
+        /* Article Page Specific Styles */
+        .article-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 150px 20px 80px;
+        }
+        .article-header { text-align: center; margin-bottom: 40px; }
+        .article-category { display: inline-block; padding: 6px 12px; background-color: var(--accent-color-light); color: #fff; font-size: 14px; font-weight: 700; border-radius: 50px; margin-bottom: 15px; text-transform: uppercase; }
+        #article-title { font-size: 56px; line-height: 1.2; margin: 10px 0; }
+        #article-meta { color: var(--text-muted); font-size: 16px; }
+        #article-thumbnail { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 16px; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .article-body {
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+        .article-body p { margin: 0 0 1.5em 0; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; background-color: rgba(255, 255, 255, 0.85); padding: 15px 40px; position: fixed; top: 0; width: 100%; z-index: 1000; backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); }
+        .footer { /* Your footer styles */ }
+    </style>
+</head>
+<body>
+    <div class="cursor-outline"></div><div class="cursor-dot"></div>
+    <header><nav class="navbar"><a href="index.html" class="logo">SULPHURIC BENCH</a><div class="nav-links"><a href="news.html">Science News</a> <a href="#">Blogs</a></div></nav></header>
+    <main>
+        <div id="articleContainer" class="article-container">
+            <!-- Article content will be injected here by JavaScript -->
+        </div>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const articleContainer = document.getElementById('articleContainer');
+
+            // 1. Get the article ID from the URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const articleId = urlParams.get('id');
+
+            if (!articleId) {
+                articleContainer.innerHTML = '<h1>Error: Article ID not found.</h1>';
+                return;
+            }
+
+            // 2. Fetch all articles from Local Storage
+            const articles = JSON.parse(localStorage.getItem('articles')) || [];
+
+            // 3. Find the specific article with the matching ID
+            const article = articles.find(a => a.id == articleId); // Use == for type coercion (string vs number)
+
+            if (article) {
+                // 4. If found, populate the page with its content
+                const publishedDate = new Date(article.publishedAt).toLocaleDateString('en-US', {
+                    year: 'numeric', month: 'long', day: 'numeric'
+                });
+
+                // Set the page title
+                document.title = `${article.title} | Sulphuric Bench`;
+
+                // Use newlines in the content for paragraph breaks
+                const formattedContent = article.content.replace(/\n/g, '</p><p>');
+
+                articleContainer.innerHTML = `
+                    <header class="article-header">
+                        <span class="article-category">${article.category}</span>
+                        <h1 id="article-title">${article.title}</h1>
+                        <p id="article-meta">By ${article.author} • ${publishedDate}</p>
+                    </header>
+                    <img id="article-thumbnail" src="${article.thumbnail}" alt="${article.title}">
+                    <div class="article-body">
+                        <p>${formattedContent}</p>
+                    </div>
+                `;
+            } else {
+                // 5. If not found, display an error message
+                articleContainer.innerHTML = '<h1>Article not found</h1><p>The requested article could not be located. It may have been moved or deleted.</p>';
+            }
+        });
+    </script>
+</body>
+</html>

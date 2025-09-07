@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Community Forum with Admin Panel</title>
+    <style>
+        /* --- Google Font Import --- */
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+
+        /* --- Global Styles & Variables --- */
+        :root {
+            /* DARK THEME (DEFAULT) - Updated to Sulphuric Bench theme */
+            --bg-primary: #0A192F;
+            --bg-secondary: #112240;
+            --accent-blue: #00BFFF;
+            --accent-purple: #00BFFF; /* Mapped purple to the main accent for consistency */
+            --text-primary: #E6F1FF;
+            --text-secondary: #a8b2d1;
+            --text-on-accent: #0A192F; /* Dark text for light buttons */
+            --border-color: #233554;
+            --danger-color: #ff4d4d;
+            --success-color: #4CAF50;
+            --shadow-color: rgba(0, 191, 255, 0.2);
+            --transition-speed: 0.3s;
+        }
+
+        html[data-theme="light"] {
+            /* Original LIGHT THEME */
+            --bg-primary: #F9FAFB;
+            --bg-secondary: #FFFFFF;
+            --accent-blue: #4F46E5;
+            --accent-purple: #6366F1;
+            --text-primary: #1F2937;
+            --text-secondary: #6B7280;
+            --text-on-accent: #FFFFFF;
+            --border-color: #E5E7EB;
+            --shadow-color: rgba(79, 70, 229, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif; /* Changed font family for consistency */
+            background-color: var(--bg-primary);
+            color: var(--text-secondary);
+            line-height: 1.6;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+            /* Starry background effect */
+            background-image: 
+              radial-gradient(circle, rgba(204, 214, 246, 0.1) 1px, transparent 1.5px),
+              radial-gradient(circle, rgba(204, 214, 246, 0.1) 1px, transparent 1.5px);
+            background-size: 100px 100px, 250px 250px;
+            background-position: 0 0, 75px 75px;
+        }
+
+        /* --- Main Layout --- */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        main {
+            min-height: calc(100vh - 200px);
+        }
+
+        /* --- Header & Footer --- */
+        .site-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+        .site-header .logo {
+            font-family: "Bebas Neue", sans-serif; /* Changed font */
+            font-size: 2rem; /* Increased size */
+            letter-spacing: 1.5px;
+            font-weight: normal; /* Bebas Neue is bold by default */
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+        .site-header .logo span { color: var(--accent-blue); }
+        .header-controls { display: flex; align-items: center; gap: 10px; }
+
+        .site-footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* --- Buttons & Forms --- */
+        .btn {
+            background-color: var(--accent-blue);
+            color: var(--text-on-accent);
+            text-decoration: none;
+            padding: 12px 25px; /* Adjusted padding */
+            border-radius: 50px; /* Rounded corners */
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .btn:hover {
+            opacity: 1; /* Removed opacity change */
+            background-color: #89ddff; /* Use lighter accent color */
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px var(--shadow-color);
+        }
+        .btn:disabled {
+            background-color: var(--bg-secondary);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+        .btn-secondary:hover {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color var(--transition-speed);
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px var(--shadow-color);
+        }
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .theme-toggle { background: none; border: none; cursor: pointer; color: var(--text-secondary); padding: 5px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: color 0.3s, background-color 0.3s; }
+        .theme-toggle:hover { color: var(--text-primary); background-color: var(--border-color); }
+        .theme-toggle .moon-icon, .theme-toggle .sun-icon { display: none; }
+        html[data-theme="dark"] .theme-toggle .sun-icon { display: block; }
+        html[data-theme="light"] .theme-toggle .moon-icon { display: block; }
+
+        /* --- ADMIN CONTROLS --- */
+        #admin-toggle-btn {
+            background-color: transparent;
+            border: 1px solid var(--accent-purple);
+            color: var(--accent-purple);
+        }
+        #admin-toggle-btn:hover {
+             background-color: var(--accent-purple);
+             color: var(--text-on-accent);
+             box-shadow: 0 4px 15px var(--shadow-color);
+        }
+        body.admin-active #admin-toggle-btn {
+            background-color: var(--accent-purple);
+            color: var(--text-on-accent);
+        }
+
+        .delete-btn {
+            background-color: transparent;
+            color: var(--danger-color);
+            border: 1px solid var(--danger-color);
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: auto;
+            transition: all 0.2s ease;
+            animation: fadeIn 0.5s ease;
+        }
+        .delete-btn:hover {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        /* --- View Containers --- */
+        .view { display: none; }
+        .view.active { display: block; animation: fadeIn 0.5s ease-in-out; }
+
+        /* --- Topic List View --- */
+        .welcome-banner {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 30px 40px;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            transition: background-color var(--transition-speed);
+            border: 1px solid var(--border-color);
+        }
+        .welcome-banner h1, .topic-list-header { font-family: "Bebas Neue", sans-serif; letter-spacing: 1.5px; }
+        .welcome-banner h1 { margin: 0; font-size: 2.5rem; color: var(--text-primary); }
+        .welcome-banner p { margin: 5px 0 0; color: var(--text-secondary); font-size: 1.1rem; }
+
+        .topic-list-header {
+            font-size: 2rem;
+            font-weight: normal;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .topic-item {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 20px 25px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: background-color 0.3s ease, transform 0.2s ease, border-color var(--transition-speed);
+            border: 1px solid var(--border-color);
+        }
+        .topic-item:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent-blue);
+        }
+        .topic-item-clickable {
+            cursor: pointer;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .topic-details { flex-grow: 1; }
+        .topic-title { font-size: 1.2rem; font-weight: 600; margin: 0; color: var(--text-primary); transition: color 0.3s ease;}
+        .topic-item:hover .topic-title { color: var(--accent-blue); }
+        .topic-meta { font-size: 0.9rem; color: var(--text-secondary); margin-top: 5px; }
+        .topic-meta .author { color: var(--accent-blue); font-weight: 600; }
+        .topic-stats { text-align: right; color: var(--text-secondary); font-size: 0.9rem; flex-shrink: 0;}
+        .topic-stats span { font-size: 1.5rem; color: var(--text-primary); font-weight: 700; display: block; }
+        
+        /* --- Topic Detail View --- */
+        .topic-detail-header { margin-bottom: 30px; }
+        .topic-detail-header h1 { font-family: "Bebas Neue", sans-serif; font-size: 2.8rem; letter-spacing: 1.5px; margin: 15px 0; color: var(--text-primary); }
+        .post {
+            display: flex;
+            gap: 20px;
+            padding: 25px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .post:first-of-type { padding-top: 0; }
+        .post-author-info { flex-shrink: 0; width: 150px; text-align: center; }
+        .author-avatar { width: 60px; height: 60px; background-color: var(--accent-purple); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 700; margin: 0 auto 10px; color: var(--text-on-accent); }
+        .author-name { font-weight: 600; color: var(--accent-blue); }
+        .post-date { font-size: 0.8rem; color: var(--text-secondary); }
+        .post-content { flex-grow: 1; }
+        .post-content p { margin: 0; white-space: pre-wrap; color: var(--text-primary);}
+        .post-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+
+        #reply-section {
+            background-color: var(--bg-secondary);
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 40px;
+            transition: background-color var(--transition-speed);
+            border: 1px solid var(--border-color);
+        }
+        #reply-section h3 { margin-top: 0; color: var(--text-primary); font-family: "Bebas Neue", sans-serif; letter-spacing: 1.5px; font-size: 1.8rem; }
+
+        /* --- New Topic Modal --- */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 1000; opacity: 0; transition: opacity 0.3s ease; backdrop-filter: blur(5px); }
+        .modal.active { display: flex; opacity: 1; }
+        .modal-content { background-color: var(--bg-secondary); padding: 30px 40px; border-radius: 12px; width: 90%; max-width: 600px; transform: scale(0.95); transition: transform 0.3s ease, background-color var(--transition-speed); border: 1px solid var(--border-color); }
+        .modal.active .modal-content { transform: scale(1); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-header h2 { margin: 0; color: var(--text-primary); font-family: "Bebas Neue", sans-serif; letter-spacing: 1.5px; font-size: 2.2rem; }
+        .close-btn { font-size: 2rem; cursor: pointer; color: var(--text-secondary); border: none; background: none; }
+        
+        /* --- Utility & Animation --- */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .welcome-banner { flex-direction: column; text-align: center; padding: 25px; }
+            .post { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .post-author-info { width: auto; text-align: left; display: flex; align-items: center; gap: 15px; }
+            .author-avatar { margin: 0; width: 45px; height: 45px; font-size: 1.4rem; }
+            .post-content { padding-left: 0; }
+            .topic-item-clickable { flex-direction: column; align-items: flex-start; }
+            .topic-stats { text-align: left; margin-top: 10px; }
+            .topic-stats span { display: inline-block; font-size: 1.1rem; margin-right: 5px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- HEADER -->
+        <header class="site-header">
+            <a href="index.html" class="logo">Sulphuric<span> Bench</span></a>
+            <div class="header-controls">
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </button>
+                <button id="admin-toggle-btn" class="btn">Admin Mode</button>
+            </div>
+        </header>
+
+        <main>
+            <!-- VIEW 1: TOPIC LIST -->
+            <div id="topic-list-view" class="view active">
+                <div class="welcome-banner">
+                    <div><h1>Community Forums</h1><p>Share knowledge, discuss ideas, and foster curiosity together.</p></div>
+                    <button id="new-topic-btn" class="btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                        Start New Discussion
+                    </button>
+                </div>
+                <h2 class="topic-list-header">All Discussions</h2>
+                <div id="topics-container"></div>
+            </div>
+
+            <!-- VIEW 2: TOPIC DETAIL -->
+            <div id="topic-detail-view" class="view">
+                <div class="topic-detail-header">
+                    <button id="back-to-topics-btn" class="btn btn-secondary">← Back to Discussions</button>
+                    <h1 id="topic-title-header"></h1>
+                </div>
+                <div id="posts-container"></div>
+                <div id="reply-section">
+                    <h3>Post a Reply</h3>
+                    <form id="reply-form">
+                        <input type="text" id="reply-author" placeholder="Your Name" required>
+                        <textarea id="reply-content" placeholder="Write your reply here..." required></textarea>
+                        <button type="submit" class="btn">Submit Reply</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+        <footer class="site-footer">&copy; 2024 Sulphuric Bench. All rights reserved.</footer>
+    </div>
+
+    <!-- MODAL for New Topic -->
+    <div id="new-topic-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Create a New Discussion</h2><button class="close-btn" aria-label="Close modal">&times;</button>
+            </div>
+            <form id="new-topic-form">
+                <input type="text" id="new-topic-author" placeholder="Your Name" required>
+                <input type="text" id="new-topic-title" placeholder="Discussion Title" required>
+                <textarea id="new-topic-content" placeholder="Start the discussion with your first post..." required></textarea>
+                <button type="submit" class="btn">Create Discussion</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    (() => {
+        // --- SECURITY WARNING ---
+        // This is a front-end only demo. The admin password is hardcoded and NOT SECURE.
+        // In a real application, authentication must be handled on a server.
+        const ADMIN_PASSWORD = 'admin123';
+
+        // --- APPLICATION STATE ---
+        const state = {
+            topics: [],
+            currentTopicId: null,
+            isAdminMode: false,
+        };
+
+        // --- DOM ELEMENTS ---
+        const DOM = {
+            body: document.body,
+            views: { list: document.getElementById('topic-list-view'), detail: document.getElementById('topic-detail-view') },
+            topicsContainer: document.getElementById('topics-container'),
+            topicTitleHeader: document.getElementById('topic-title-header'),
+            postsContainer: document.getElementById('posts-container'),
+            adminToggleBtn: document.getElementById('admin-toggle-btn'),
+            themeToggleBtn: document.getElementById('theme-toggle'), // NEW
+            backToTopicsBtn: document.getElementById('back-to-topics-btn'),
+            // Modal elements
+            newTopicBtn: document.getElementById('new-topic-btn'),
+            newTopicModal: document.getElementById('new-topic-modal'),
+            newTopicForm: document.getElementById('new-topic-form'),
+            closeModalBtn: document.querySelector('#new-topic-modal .close-btn'),
+            // Reply form elements
+            replyForm: document.getElementById('reply-form'),
+        };
+
+        // --- DATA MANAGEMENT ---
+        const dataManager = {
+            load() {
+                try {
+                    const storedData = localStorage.getItem('forumData');
+                    state.topics = storedData ? JSON.parse(storedData) : this.getDefaultData();
+                } catch (error) {
+                    console.error("Failed to parse data from localStorage:", error);
+                    state.topics = this.getDefaultData();
+                }
+            },
+            save() {
+                localStorage.setItem('forumData', JSON.stringify(state.topics));
+            },
+            getDefaultData() {
+                return [
+                    { id: 1, title: 'James Webb Telescope\'s latest findings', author: 'CosmoExplorer', date: new Date('2023-10-26T10:00:00Z'), posts: [{ author: 'CosmoExplorer', date: new Date('2023-10-26T10:00:00Z'), content: 'Has anyone seen the incredible new images of the Pillars of Creation? The level of detail is just breathtaking. What do you all think are the biggest implications of this?' }, { author: 'Stargazer_82', date: new Date('2023-10-26T12:30:00Z'), content: 'Absolutely stunning! I think it will completely change our models of star formation. The clarity on the protostars is unprecedented.' }] },
+                    { id: 2, title: 'The future of CRISPR technology', author: 'GeneGenius', date: new Date('2023-10-25T14:00:00Z'), posts: [{ author: 'GeneGenius', date: new Date('2023-10-25T14:00:00Z'), content: 'With the advancements in CRISPR-Cas9, what do you believe is the next big breakthrough we\'ll see? Are we close to curing genetic diseases?' }] }
+                ];
+            }
+        };
+        
+        // --- VIEW & RENDERING LOGIC ---
+        const viewManager = {
+            switch(viewName) {
+                Object.values(DOM.views).forEach(view => view.classList.remove('active'));
+                DOM.views[viewName].classList.add('active');
+                window.scrollTo(0, 0); // Scroll to top on view change
+            },
+            rerenderCurrent() {
+                if (DOM.views.list.classList.contains('active')) this.renderTopicList();
+                if (DOM.views.detail.classList.contains('active')) this.renderTopicDetail(state.currentTopicId);
+            },
+            renderTopicList() {
+                DOM.topicsContainer.innerHTML = '';
+                if (state.topics.length === 0) {
+                    DOM.topicsContainer.innerHTML = '<p>No discussions yet. Be the first to start one!</p>';
+                    return;
+                }
+                const sortedTopics = [...state.topics].sort((a, b) => new Date(b.posts[b.posts.length - 1].date) - new Date(a.posts[a.posts.length - 1].date));
+                sortedTopics.forEach(topic => {
+                    const topicEl = document.createElement('div');
+                    topicEl.className = 'topic-item';
+                    topicEl.innerHTML = `
+                        <div class="topic-item-clickable" data-topic-id="${topic.id}">
+                            <div class="topic-details">
+                                <h3 class="topic-title">${escapeHTML(topic.title)}</h3>
+                                <p class="topic-meta">Started by <span class="author">${escapeHTML(topic.author)}</span> on ${formatDate(topic.date)}</p>
+                            </div>
+                            <div class="topic-stats"><span>${topic.posts.length}</span> Posts</div>
+                        </div>
+                        ${state.isAdminMode ? `<button class="delete-btn delete-topic-btn" data-topic-id="${topic.id}">Delete Topic</button>` : ''}
+                    `;
+                    DOM.topicsContainer.appendChild(topicEl);
+                });
+            },
+            renderTopicDetail(topicId) {
+                const topic = state.topics.find(t => t.id === topicId);
+                if (!topic) { this.switch('list'); return; }
+                
+                DOM.topicTitleHeader.textContent = topic.title;
+                DOM.postsContainer.innerHTML = '';
+                topic.posts.forEach((post, index) => {
+                    const initial = post.author ? escapeHTML(post.author).charAt(0).toUpperCase() : '?';
+                    const postEl = document.createElement('div');
+                    postEl.className = 'post';
+                    postEl.innerHTML = `
+                        <div class="post-author-info">
+                            <div class="author-avatar">${initial}</div>
+                            <div>
+                                <div class="author-name">${escapeHTML(post.author)}</div>
+                                <div class="post-date">${formatDate(post.date)}</div>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            <div class="post-header">
+                                ${state.isAdminMode ? `<button class="delete-btn delete-post-btn" data-post-index="${index}">Delete Post</button>` : ''}
+                            </div>
+                            <p>${escapeHTML(post.content)}</p>
+                        </div>
+                    `;
+                    DOM.postsContainer.appendChild(postEl);
+                });
+            }
+        };
+
+        // --- ADMIN & CORE LOGIC ---
+        const actions = {
+            toggleAdminMode() {
+                if (!state.isAdminMode) {
+                    const pass = prompt('Enter admin password:');
+                    if (pass === ADMIN_PASSWORD) {
+                        state.isAdminMode = true;
+                        DOM.adminToggleBtn.textContent = 'Exit Admin Mode';
+                        DOM.body.classList.add('admin-active');
+                        alert('Admin mode activated.');
+                    } else if (pass) { // only show error if they entered something
+                        alert('Incorrect password.');
+                        return;
+                    } else {
+                        return; // User cancelled prompt
+                    }
+                } else {
+                    state.isAdminMode = false;
+                    DOM.adminToggleBtn.textContent = 'Admin Mode';
+                    DOM.body.classList.remove('admin-active');
+                }
+                viewManager.rerenderCurrent();
+            },
+            deleteTopic(topicId) {
+                if (confirm('Are you sure you want to permanently delete this entire topic?')) {
+                    state.topics = state.topics.filter(t => t.id !== topicId);
+                    dataManager.save();
+                    if(state.currentTopicId === topicId) {
+                        state.currentTopicId = null;
+                        viewManager.switch('list');
+                    }
+                    viewManager.renderTopicList();
+                }
+            },
+            deletePost(topicId, postIndex) {
+                 const topic = state.topics.find(t => t.id === topicId);
+                 if (!topic) return;
+
+                 if (topic.posts.length === 1) {
+                    if(confirm("This is the only post. Deleting it will remove the entire topic. Proceed?")) {
+                        this.deleteTopic(topicId);
+                    }
+                    return;
+                 }
+                 
+                 if (confirm('Are you sure you want to permanently delete this post?')) {
+                    topic.posts.splice(postIndex, 1);
+                    dataManager.save();
+                    viewManager.renderTopicDetail(topicId);
+                }
+            },
+            createTopic(author, title, content) {
+                const newTopic = { 
+                    id: Date.now(), 
+                    author, 
+                    title, 
+                    date: new Date().toISOString(), 
+                    posts: [{ 
+                        author, 
+                        content, 
+                        date: new Date().toISOString() 
+                    }] 
+                };
+                state.topics.push(newTopic);
+                dataManager.save();
+                viewManager.renderTopicList();
+            },
+            createReply(topicId, author, content) {
+                const topic = state.topics.find(t => t.id === topicId);
+                if (topic) {
+                    topic.posts.push({ author, content, date: new Date().toISOString() });
+                    dataManager.save();
+                    viewManager.renderTopicDetail(topicId);
+                    // Scroll to the new post
+                    DOM.postsContainer.lastElementChild.scrollIntoView({ behavior: 'smooth' });
+                }
+            },
+            // NEW: Theme toggle action
+            initTheme() {
+                const applyTheme = (theme) => {
+                    document.documentElement.setAttribute('data-theme', theme);
+                    localStorage.setItem('theme', theme);
+                };
+                
+                const savedTheme = localStorage.getItem('theme');
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+                applyTheme(initialTheme);
+                
+                DOM.themeToggleBtn.addEventListener('click', () => {
+                    const currentTheme = document.documentElement.getAttribute('data-theme');
+                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                    applyTheme(newTheme);
+                });
+            }
+        };
+        
+        // --- EVENT HANDLERS ---
+        function setupEventListeners() {
+            DOM.adminToggleBtn.addEventListener('click', actions.toggleAdminMode);
+            DOM.backToTopicsBtn.addEventListener('click', () => { state.currentTopicId = null; viewManager.switch('list'); });
+            DOM.newTopicBtn.addEventListener('click', () => DOM.newTopicModal.classList.add('active'));
+            DOM.closeModalBtn.addEventListener('click', () => DOM.newTopicModal.classList.remove('active'));
+            DOM.newTopicModal.addEventListener('click', (e) => e.target === DOM.newTopicModal && DOM.newTopicModal.classList.remove('active'));
+
+            DOM.newTopicForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const btn = e.target.querySelector('button[type="submit"]');
+                const author = e.target.elements['new-topic-author'].value.trim();
+                const title = e.target.elements['new-topic-title'].value.trim();
+                const content = e.target.elements['new-topic-content'].value.trim();
+
+                if (!author || !title || !content) {
+                    alert('Please fill out all fields.');
+                    return;
+                }
+
+                setButtonLoading(btn, true, "Creating...");
+                actions.createTopic(author, title, content);
+                DOM.newTopicForm.reset();
+                DOM.newTopicModal.classList.remove('active');
+                setButtonLoading(btn, false, "Create Discussion");
+            });
+
+            DOM.replyForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const btn = e.target.querySelector('button[type="submit"]');
+                const author = e.target.elements['reply-author'].value.trim();
+                const content = e.target.elements['reply-content'].value.trim();
+
+                if (!author || !content) {
+                    alert('Please fill out all fields.');
+                    return;
+                }
+
+                setButtonLoading(btn, true, "Submitting...");
+                actions.createReply(state.currentTopicId, author, content);
+                DOM.replyForm.reset();
+                setButtonLoading(btn, false, "Submit Reply");
+            });
+
+            // Event delegation for dynamically created elements
+            document.addEventListener('click', (e) => {
+                const clickableTopic = e.target.closest('.topic-item-clickable');
+                if (clickableTopic) {
+                    state.currentTopicId = Number(clickableTopic.dataset.topicId);
+                    viewManager.renderTopicDetail(state.currentTopicId);
+                    viewManager.switch('detail');
+                }
+                if (e.target.matches('.delete-topic-btn')) {
+                    actions.deleteTopic(Number(e.target.dataset.topicId));
+                }
+                if (e.target.matches('.delete-post-btn')) {
+                    actions.deletePost(state.currentTopicId, Number(e.target.dataset.postIndex));
+                }
+            });
+        }
+        
+        // --- UTILITY FUNCTIONS ---
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return isNaN(date) ? 'Invalid Date' : date.toLocaleString(undefined, {
+                year: 'numeric', month: 'long', day: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            });
+        }
+
+        function escapeHTML(str) {
+            const p = document.createElement('p');
+            p.textContent = str;
+            return p.innerHTML;
+        }
+        
+        function setButtonLoading(button, isLoading, loadingText) {
+            if (isLoading) {
+                button.disabled = true;
+                button.dataset.originalText = button.textContent;
+                button.textContent = loadingText;
+            } else {
+                button.disabled = false;
+                button.textContent = button.dataset.originalText;
+            }
+        }
+
+        // --- INITIALIZATION ---
+        function init() {
+            actions.initTheme(); // NEW: Initialize the theme logic
+            dataManager.load();
+            viewManager.renderTopicList();
+            setupEventListeners();
+        }
+
+        init();
+    })();
+    </script>
+</body>
+</html>
