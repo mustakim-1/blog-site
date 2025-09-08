@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
-  <!-- Set a default theme to avoid a flash of unstyled content -->
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -37,18 +36,18 @@
 
       html[data-theme="light"] {
         /* NEW LIGHT THEME PALETTE */
-        --bg-primary: #F9FAFB;       /* Very Light Gray */
-        --bg-secondary: #FFFFFF;      /* White for Cards */
+        --bg-primary: #F9FAFB;
+        --bg-secondary: #FFFFFF;
         --bg-navbar: rgba(249, 250, 251, 0.85);
-        --accent-color: #4F46E5;      /* Vibrant Indigo */
+        --accent-color: #4F46E5;
         --accent-color-rgb: 79, 70, 229;
-        --accent-color-light: #A5B4FC; /* A complementary light indigo */
-        --text-primary: #1F2937;      /* Very Dark Gray for headings */
-        --text-secondary: #374151;    /* Lighter grey for body text */
-        --text-muted: #6B7280;        /* Muted grey for secondary info */
-        --text-on-accent: #FFFFFF; /* Text for buttons */
-        --border-color: #E5E7EB;      /* Subtle border color */
-        --shadow-color: rgba(79, 70, 229, 0.15); /* Glow effect color */
+        --accent-color-light: #A5B4FC;
+        --text-primary: #1F2937;
+        --text-secondary: #374151;
+        --text-muted: #6B7280;
+        --text-on-accent: #FFFFFF;
+        --border-color: #E5E7EB;
+        --shadow-color: rgba(79, 70, 229, 0.15);
         --shadow-nav-scrolled: rgba(107, 114, 128, 0.1);
         --shadow-image: rgba(55, 65, 81, 0.2);
         --shadow-container: rgba(107, 114, 128, 0.15);
@@ -64,7 +63,7 @@
       }
 
       html {
-        scroll-behavior: smooth;
+        /* JS will handle scrolling for a better experience */
       }
 
       body {
@@ -75,11 +74,14 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         overflow-x: hidden;
-        cursor: none; /* Hide default cursor */
+        cursor: none;
         transition: background-color var(--transition-speed), color var(--transition-speed);
       }
       
-      /* --- Custom Cursor --- */
+      body.menu-open {
+        overflow: hidden;
+      }
+
       .cursor-dot, .cursor-outline {
         pointer-events: none;
         position: fixed;
@@ -109,7 +111,6 @@
         .cursor-dot, .cursor-outline { display: none; }
       }
 
-      /* Global Styles */
       h1, h2, h3, h4 {
         font-family: "Bebas Neue", sans-serif;
         letter-spacing: 1.5px;
@@ -132,9 +133,8 @@
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         border-bottom: 1px solid var(--border-color);
-        transition: top 0.4s ease-in-out, box-shadow 0.3s ease, background-color var(--transition-speed);
+        transition: box-shadow 0.3s ease, background-color var(--transition-speed);
       }
-      .navbar-hidden { top: -100px; }
       .navbar-scrolled { box-shadow: 0 5px 20px var(--shadow-nav-scrolled); }
       .logo { font-size: 32px; font-family: "Bebas Neue", sans-serif; color: var(--text-primary); letter-spacing: 2px; text-decoration: none; }
       .nav-links { display: flex; gap: 35px; }
@@ -143,7 +143,6 @@
       .nav-links a:hover { color: var(--text-primary); }
       .nav-links a:hover::after { width: 100%; }
       
-      /* NEW THEME TOGGLE BUTTON */
       .nav-controls { display: flex; align-items: center; gap: 15px; }
       .theme-toggle { background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 5px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: color 0.3s, background-color 0.3s; }
       .theme-toggle:hover { color: var(--text-primary); background-color: var(--border-color); }
@@ -151,13 +150,38 @@
       html[data-theme="dark"] .theme-toggle .sun-icon { display: block; }
       html[data-theme="light"] .theme-toggle .moon-icon { display: block; }
 
-      /* Mobile Nav */
-      .hamburger { display: none; background: none; border: none; }
+      .hamburger { 
+        display: none; 
+        background: none; 
+        border: none;
+        position: relative;
+        z-index: 1002;
+      }
       .hamburger .bar { background-color: var(--text-primary); }
-      .mobile-nav { background-color: var(--bg-secondary); }
-      .mobile-nav a { color: var(--text-primary); }
+      
+      .mobile-nav { 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
+        position: fixed;
+        top: 0;
+        left: 100%;
+        width: 100%;
+        height: 100vh;
+        background-color: var(--bg-secondary); 
+        transition: left 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+        z-index: 1001;
+      }
+      .mobile-nav.is-active { left: 0; }
+      .mobile-nav a { 
+        color: var(--text-primary); 
+        font-size: 24px;
+        font-weight: 500;
+        text-decoration: none;
+      }
 
-      /* Hero Section */
       .hero {
         text-align: center;
         padding: 180px 20px 120px;
@@ -186,15 +210,21 @@
         box-shadow: 0 0 35px var(--shadow-color);
       }
       
-      /* --- What We Do Section --- */
-      .what-we-do {
-        background-color: var(--bg-secondary);
+      .what-we-do, .capabilities-section, .journey-section, .stats-section, .testimonials-section, .faq-section, .cta-section {
         border-top: 1px solid var(--border-color);
-        transition: background-color var(--transition-speed);
       }
-      .what-we-do-header { text-align: center; max-width: 750px; margin: 0 auto 80px auto; }
-      .what-we-do-header h2 { font-size: 48px; margin-bottom: 15px; }
+      .what-we-do { background-color: var(--bg-secondary); }
+      .capabilities-section { background: var(--bg-primary); }
+      .journey-section { background: var(--bg-secondary); }
+      .stats-section { background: var(--bg-primary); text-align: center; }
+      .testimonials-section { background-color: var(--bg-secondary); }
+      .faq-section { background-color: var(--bg-primary); }
+      .cta-section { background: var(--bg-secondary); text-align: center; position: relative; overflow: hidden; }
+
+      .what-we-do-header, .capabilities-section .section-header, .journey-heading { text-align: center; max-width: 750px; margin: 0 auto 80px auto; }
+      h2.section-title { font-size: 48px; margin-bottom: 15px; }
       .section-subtitle { font-size: 18px; color: var(--text-secondary); line-height: 1.7; margin: 0; }
+      
       .feature-item { display: grid; grid-template-columns: repeat(2, 1fr); gap: 60px; align-items: center; margin-bottom: 100px; }
       .feature-item:last-child { margin-bottom: 0; }
       .feature-item--reverse { grid-template-areas: "text image"; }
@@ -208,13 +238,6 @@
       .feature-link::after { content: " →"; transition: transform 0.3s ease; display: inline-block; }
       .feature-link:hover::after { transform: translateX(5px); }
       
-      /* --- CAPABILITIES SECTION --- */
-      .capabilities-section { 
-        background: var(--bg-primary); 
-        border-top: 1px solid var(--border-color); 
-      }
-      .capabilities-section .section-header { text-align: center; max-width: 700px; margin: 0 auto 60px auto; }
-      .capabilities-section .section-header h2 { font-size: 48px; margin-bottom: 15px; }
       .capabilities-grid {
         display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px;
         align-items: flex-start; background-color: var(--bg-secondary);
@@ -231,16 +254,24 @@
       .capability-tab:hover { border-color: var(--accent-color); color: var(--text-primary); }
       .capability-tab.active { background-color: var(--bg-primary); border-color: var(--accent-color); color: var(--accent-color); box-shadow: 0 0 15px var(--shadow-color); }
       .capability-tab svg { width: 24px; height: 24px; stroke-width: 2; flex-shrink: 0; }
-      .capabilities-text-content { position: relative; min-height: 150px; }
-      .capability-pane { position: absolute; inset: 0; opacity: 0; transform: translateY(10px); transition: opacity 0.4s ease, transform 0.4s ease; }
-      .capability-pane.active { opacity: 1; transform: translateY(0); }
+      
+      .capabilities-text-content {}
+      .capability-pane {
+        overflow: hidden;
+        opacity: 0;
+        max-height: 0;
+        transform: translateY(10px);
+        transition: opacity 0.4s ease, transform 0.4s ease, max-height 0.4s ease;
+      }
+      .capability-pane.active {
+        opacity: 1;
+        max-height: 500px; /* A large value to allow content to expand */
+        transform: translateY(0);
+      }
+      
       .capability-pane h4 { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 24px; letter-spacing: 0; margin: 0 0 10px 0; color: var(--text-primary); }
       .capability-pane p { font-size: 17px; color: var(--text-muted); line-height: 1.8; margin: 0; }
       
-      /* --- Journey Section --- */
-      .journey-section { background: var(--bg-secondary); border-top: 1px solid var(--border-color); }
-      .journey-heading { text-align: center; max-width: 700px; margin: 0 auto 70px auto; }
-      .journey-heading h2 { font-size: 48px; margin-bottom: 15px; }
       .journey-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 80px; }
       .journey-nav-wrapper { position: relative; }
       .journey-nav { position: sticky; top: 120px; align-self: start; }
@@ -255,41 +286,13 @@
       .journey-chapter { background: var(--bg-primary); padding: 40px; border-radius: 16px; margin-bottom: 150px; position: relative; overflow: hidden; border: 1px solid var(--border-color); }
       .chapter-year-bg { position: absolute; top: -20px; right: 20px; font-family: "Bebas Neue", sans-serif; font-size: 150px; font-weight: 900; color: var(--text-bg-watermark); z-index: 0; user-select: none; }
 
-      /* --- NEW STATS SECTION --- */
-      .stats-section {
-        background: var(--bg-primary); text-align: center; border-top: 1px solid var(--border-color);
-      }
-      .stats-section h2 {
-        font-size: 48px; margin-bottom: 60px;
-      }
-      .stats-container {
-        display: flex;
-        background: var(--bg-secondary);
-        border: 1px solid var(--border-color);
-        border-radius: 16px;
-        padding: 20px 0;
-        box-shadow: 0 10px 30px var(--shadow-container);
-      }
-      .stat-box {
-        flex: 1;
-        text-align: center;
-        padding: 20px;
-        border-right: 1px solid var(--border-color);
-      }
-      .stat-box:last-child {
-        border-right: none;
-      }
-      .stat-box h3 {
-        font-size: 56px; font-family: 'Poppins', sans-serif; font-weight: 700;
-        color: var(--accent-color); margin: 0 0 5px 0;
-      }
-      .stat-box p {
-        font-size: 16px; color: var(--text-muted); line-height: 1.5; margin: 0;
-      }
+      .stats-container { display: flex; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px 0; box-shadow: 0 10px 30px var(--shadow-container); }
+      .stat-box { flex: 1; text-align: center; padding: 20px; border-right: 1px solid var(--border-color); }
+      .stat-box:last-child { border-right: none; }
+      .stat-box h3 { font-size: 56px; font-family: 'Poppins', sans-serif; font-weight: 700; color: var(--accent-color); margin: 0 0 5px 0; }
+      .stat-box p { font-size: 16px; color: var(--text-muted); line-height: 1.5; margin: 0; }
       
-      /* Testimonials Slider Section */
-      .testimonials-section { background-color: var(--bg-secondary); border-top: 1px solid var(--border-color); }
-      .testimonials-section h2 { text-align: center; font-size: 48px; margin-bottom: 50px; }
+      .testimonials-section h2, .faq-section h2 { text-align: center; }
       .testimonial-slider-wrapper { position: relative; max-width: 800px; margin: auto; }
       .testimonial-slider { overflow: hidden; }
       .testimonial-slides { display: flex; transition: transform 0.5s ease-in-out; }
@@ -308,10 +311,7 @@
       .slider-dot { display: inline-block; width: 10px; height: 10px; background-color: var(--border-color); border-radius: 50%; margin: 0 5px; cursor: pointer; transition: background-color 0.3s; }
       .slider-dot.active { background-color: var(--accent-color); }
 
-      /* Enhanced FAQ Section */
-      .faq-section { background-color: var(--bg-primary); border-top: 1px solid var(--border-color); }
       .faq-section .container { max-width: 900px; }
-      .faq-section h2 { text-align: center; font-size: 48px; margin-bottom: 50px; }
       .faq-accordion { display: grid; gap: 10px; }
       .faq-item { background: var(--bg-secondary); border-radius: 8px; overflow: hidden; transition: box-shadow 0.3s ease, background-color var(--transition-speed); border: 1px solid var(--border-color); }
       .faq-item:hover { box-shadow: 0 0 15px var(--shadow-color); }
@@ -325,14 +325,11 @@
       .faq-item.active .faq-question .icon { transform: rotate(180deg); }
       .faq-item.active .faq-answer { grid-template-rows: 1fr; }
 
-      /* CTA Section */
-      .cta-section { background: var(--bg-secondary); color: var(--text-primary); text-align: center; padding: 80px 20px; position: relative; overflow: hidden; border-top: 1px solid var(--border-color); }
+      .cta-section { padding: 80px 20px; }
       .cta-section::before { content: ''; position: absolute; top: 50%; left: 50%; width: 1000px; height: 1000px; transform: translate(-50%, -50%); background: radial-gradient(circle, rgba(var(--accent-color-rgb), 0.05) 0%, transparent 70%); pointer-events: none; }
       .cta-section .container { position: relative; z-index: 1; }
-      .cta-section h2 { color: var(--text-primary); font-size: 48px; margin-bottom: 15px; }
-      .cta-section p { color: var(--text-secondary); font-size: 18px; max-width: 600px; margin: 0 auto 30px auto; }
+      .cta-section p { max-width: 600px; margin: 0 auto 30px auto; }
       
-      /* Footer */
       .site-footer {
         background-color: var(--bg-primary); color: var(--text-muted);
         padding: 60px 40px; font-size: 15px; border-top: 1px solid var(--border-color);
@@ -352,23 +349,32 @@
       .newsletter-form button svg { stroke: var(--bg-primary); }
       .footer-bottom { border-top: 1px solid var(--border-color); padding-top: 30px; text-align: center; }
 
-      /* Reduced Motion */
       @media (prefers-reduced-motion: reduce) {
-        html { scroll-behavior: auto; }
         *, *::before, *::after {
-          animation-duration: 0.01ms !important; animation-iteration-count: 1 !important;
-          transition-duration: 0.01ms !important; scroll-behavior: auto !important;
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
         }
       }
 
-      /* Responsive Design */
       @media (max-width: 992px) {
-        .footer-grid { grid-template-columns: 1fr 1fr; }
+        section { padding: 80px 30px; }
+        .hero h1 { font-size: 72px; }
+        h2.section-title { font-size: 42px; }
         .slider-btn { display: none; }
         .journey-layout { grid-template-columns: 1fr; gap: 40px; }
         .journey-nav { position: static; margin-bottom: 40px; }
-        .journey-nav ul { display: flex; justify-content: center; border-left: none; border-bottom: 2px solid var(--border-color); }
-        .journey-nav-item a { padding: 10px; text-align: center; }
+        .journey-nav ul { 
+          display: flex; 
+          justify-content: flex-start;
+          border-left: none; 
+          border-bottom: 2px solid var(--border-color); 
+          overflow-x: auto;
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .journey-nav ul::-webkit-scrollbar { display: none; }
+        .journey-nav-item a { padding: 10px 20px; text-align: center; white-space: nowrap; }
         .journey-nav-item a::before { top: auto; bottom: -2px; width: 100%; height: 2px; }
         .journey-nav-item.active a { transform: translateX(0); }
         .journey-nav-item .nav-title { display: none; }
@@ -376,32 +382,113 @@
         .feature-item, .feature-item--reverse { grid-template-columns: 1fr; grid-template-areas: unset !important; gap: 30px; text-align: center; }
         .feature-item .feature-text, .feature-item--reverse .feature-text { grid-area: unset !important; }
         .feature-item .feature-image, .feature-item--reverse .feature-image { grid-area: unset !important; order: -1; }
-        .capabilities-grid { grid-template-columns: 1fr; }
-        .capabilities-visuals { order: -1; }
-        /* Responsive Stats */
-        .stats-container { flex-direction: column; padding: 0; }
-        .stat-box { border-right: none; border-bottom: 1px solid var(--border-color); }
-        .stat-box:last-child { border-bottom: none; }
+        
+        .capabilities-grid { 
+            grid-template-columns: 1fr; 
+        }
+        .capabilities-visuals {
+            order: -1;
+        }
+        
+        .stats-container { 
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background-color: var(--border-color);
+            border: 1px solid var(--border-color);
+            padding: 0;
+        }
+        .stat-box { 
+            background-color: var(--bg-secondary);
+            border: none;
+        }
+        
+        .footer-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 30px 20px;
+        }
+        .footer-column:first-child {
+            grid-column: 1 / -1;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .footer-column:first-child .newsletter-form {
+            max-width: 450px;
+            margin: 10px auto 0;
+        }
       }
+
       @media (max-width: 768px) {
         section { padding: 60px 20px; }
         .navbar { padding: 15px 20px; }
         .nav-links { display: none; }
-        .hamburger { display: block; cursor: pointer; z-index: 1001; padding: 0; }
+        .hamburger { display: block; cursor: pointer; padding: 0; }
         .hamburger .bar { display: block; width: 25px; height: 3px; margin: 5px auto; transition: all 0.3s ease-in-out; }
         .hamburger.is-active .bar:nth-child(2) { opacity: 0; }
         .hamburger.is-active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
         .hamburger.is-active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
-        .mobile-nav { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px; position: fixed; top: 0; left: 100%; width: 100%; height: 100vh; transition: left 0.4s cubic-bezier(0.77, 0, 0.175, 1); z-index: 999; }
-        .mobile-nav.is-active { left: 0; }
+        
         .hero h1 { font-size: 54px; }
         .hero p { font-size: 18px; }
-        .footer-grid { grid-template-columns: 1fr; }
-        /* Responsive Stats for Mobile */
-        .stats-container { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background-color: var(--border-color); border: 1px solid var(--border-color);}
-        .stat-box { background-color: var(--bg-secondary); border: none; }
+        h2.section-title { font-size: 38px; }
+        .feature-text h3 { font-size: 30px; }
+        
+        .footer-grid {
+            grid-template-columns: 1fr;
+            text-align: center;
+        }
+        .footer-column:first-child {
+            margin-bottom: 10px;
+        }
+        .footer-column:first-child .newsletter-form {
+            max-width: 100%;
+        }
+        .footer-column {
+            margin-bottom: 20px;
+        }
+        .footer-column:last-child {
+            margin-bottom: 0;
+        }
+        
+        .capabilities-grid {
+            padding: 25px;
+            gap: 0;
+        }
+        .capabilities-visuals {
+            aspect-ratio: 16 / 9;
+            margin-bottom: 30px;
+        }
+        .capabilities-tabs {
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+        .capability-tab {
+            font-size: 16px;
+            padding: 12px 15px;
+        }
+        .capability-pane h4 {
+          font-size: 20px;
+          margin-bottom: 8px;
+        }
+        .capability-pane p {
+          font-size: 16px;
+          line-height: 1.6;
+        }
+
+        .stats-container { 
+            grid-template-columns: 1fr;
+        }
       }
-</style>
+
+      @media (max-width: 480px) {
+        .hero h1 { font-size: 44px; }
+        .hero p { font-size: 16px; }
+        h2.section-title { font-size: 32px; }
+        .stat-box h3 { font-size: 48px; }
+        .faq-question { font-size: 18px; }
+        .logo { font-size: 28px; }
+      }
+    </style>
   </head>
   <body>
 
@@ -412,7 +499,10 @@
       <nav class="navbar">
         <a href="#" class="logo">SULPHURIC BENCH</a>
         <div class="nav-links">
-          <a href="#">Science News</a> <a href="#">Blogs</a> <a href="#journey">Our Journey</a> <a href="#faq">FAQ</a>
+          <a href="#what-we-do">Science News</a> 
+          <a href="#capabilities">Blogs</a> 
+          <a href="#journey">Our Journey</a> 
+          <a href="#faq">FAQ</a>
         </div>
         <div class="nav-controls">
             <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
@@ -425,7 +515,10 @@
         </div>
       </nav>
       <div class="mobile-nav">
-          <a href="#">Science News</a> <a href="#">Blogs</a> <a href="#journey">Our Journey</a> <a href="#faq">FAQ</a>
+          <a href="#what-we-do">Science News</a> 
+          <a href="#capabilities">Blogs</a> 
+          <a href="#journey">Our Journey</a> 
+          <a href="#faq">FAQ</a>
       </div>
     </header>
 
@@ -439,11 +532,10 @@
         </div>
       </section>
 
-      <!-- "WHAT WE DO" SECTION -->
       <section class="what-we-do" id="what-we-do">
         <div class="container">
             <div class="what-we-do-header animate-on-scroll">
-                <h2>How We Bring Science to You</h2>
+                <h2 class="section-title">How We Bring Science to You</h2>
                 <p class="section-subtitle">We are dedicated to making science accessible, engaging, and trustworthy. Here’s a closer look at our approach.</p>
             </div>
             <div class="feature-item animate-on-scroll">
@@ -469,19 +561,16 @@
                     <span class="feature-eyebrow">03 — COLLABORATIVE PLATFORM</span>
                     <h3>Fostering Community Growth</h3>
                     <p>Science is better together. We've built a collaborative platform where like-minded individuals can unite, share knowledge, and discuss ideas. Join our forums to connect with others and foster scientific curiosity together.</p>
-                    <a href="forum.html" class="feature-link">Join the Discussion</a>
+                    <a href=".forum.html" class="feature-link">Join the Discussion</a>
                 </div>
             </div>
         </div>
       </section>
 
-      <!-- ====================================================== -->
-      <!-- NEW "OUR CAPABILITIES" SECTION ("Tabbed" Design)       -->
-      <!-- ====================================================== -->
-      <section class="capabilities-section">
+      <section class="capabilities-section" id="capabilities">
           <div class="container">
               <div class="section-header animate-on-scroll">
-                  <h2>Our Core Capabilities</h2>
+                  <h2 class="section-title">Our Core Capabilities</h2>
                   <p class="section-subtitle">We focus on three key areas to provide a comprehensive, reliable, and engaging platform for science enthusiasts everywhere.</p>
               </div>
               <div class="capabilities-grid animate-on-scroll">
@@ -524,12 +613,11 @@
           </div>
       </section>
       
-      <!-- JOURNEY SECTION -->
       <section class="journey-section" id="journey">
         <div class="container">
             <div class="journey-heading animate-on-scroll">
-                <h2>Our Journey</h2>
-                <p>From a simple idea to a thriving community. Follow our story of growth, innovation, and commitment to accessible science.</p>
+                <h2 class="section-title">Our Journey</h2>
+                <p class="section-subtitle">From a simple idea to a thriving community. Follow our story of growth, innovation, and commitment to accessible science.</p>
             </div>
             <div class="journey-layout">
                 <div class="journey-nav-wrapper">
@@ -568,10 +656,9 @@
         </div>
       </section>
 
-      <!-- STATS, TESTIMONIALS, FAQ, CTA, FOOTER... -->
       <section class="stats-section">
           <div class="container">
-              <h2 class="animate-on-scroll">The proof is in the numbers</h2>
+              <h2 class="section-title animate-on-scroll">The proof is in the numbers</h2>
               <div class="stats-container">
                   <div class="stat-box animate-on-scroll"><h3 class="counter" data-target="50">0</h3><p>Competitions organised</p></div>
                   <div class="stat-box animate-on-scroll" style="transition-delay: 0.1s;"><h3 class="counter" data-target="40">0</h3><p>Dedicated Team Members</p></div>
@@ -580,9 +667,10 @@
               </div>
           </div>
       </section>
+      
       <section class="testimonials-section">
         <div class="container">
-          <h2 class="animate-on-scroll">What Our Community Says</h2>
+          <h2 class="section-title animate-on-scroll">What Our Community Says</h2>
           <div class="testimonial-slider-wrapper animate-on-scroll">
             <div class="testimonial-slider">
               <div class="testimonial-slides">
@@ -596,9 +684,10 @@
           </div>
         </div>
       </section>
+      
       <section class="faq-section" id="faq">
         <div class="container">
-          <h2 class="animate-on-scroll">Frequently Asked Questions</h2>
+          <h2 class="section-title animate-on-scroll">Frequently Asked Questions</h2>
           <div class="faq-accordion">
             <div class="faq-item animate-on-scroll">
               <div class="faq-question"><span>How is the news verified?</span><span class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
@@ -615,9 +704,10 @@
           </div>
         </div>
       </section>
+      
       <section class="cta-section">
         <div class="container animate-on-scroll">
-          <h2>Join a Community of Innovators</h2>
+          <h2 class="section-title">Join a Community of Innovators</h2>
           <p>Become part of a thriving network of learners, researchers, and creators. Get the latest science news, share your ideas, and shape the future.</p>
           <a href="#" class="btn">SIGN UP NOW</a>
         </div>
@@ -639,8 +729,7 @@
     <script>
       document.addEventListener('DOMContentLoaded', function () {
         
-        // --- Initialize all site functionalities ---
-        initThemeToggle(); // NEW: Initialize the theme toggle
+        initThemeToggle();
         initNavbar();
         initCustomCursor();
         initParticleCanvas();
@@ -651,25 +740,62 @@
         initMobileNav();
         initJourneyNav(); 
         initCapabilitiesTabs();
+        initSmoothScrolling();
 
-        /**
-         * NEW: Initializes the theme toggle functionality.
-         */
+        function initSmoothScrolling() {
+            const navLinks = document.querySelectorAll('.nav-links a[href^="#"]:not([href="#"]), .mobile-nav a[href^="#"]:not([href="#"])');
+
+            const smoothScrollTo = (targetPosition, duration = 800) => {
+                const startPosition = window.pageYOffset;
+                const distance = targetPosition - startPosition;
+                let startTime = null;
+
+                const animation = (currentTime) => {
+                    if (startTime === null) startTime = currentTime;
+                    const timeElapsed = currentTime - startTime;
+                    const run = ease(timeElapsed, startPosition, distance, duration);
+                    window.scrollTo(0, run);
+                    if (timeElapsed < duration) requestAnimationFrame(animation);
+                };
+
+                const ease = (t, b, c, d) => {
+                    t /= d / 2;
+                    if (t < 1) return c / 2 * t * t + b;
+                    t--;
+                    return -c / 2 * (t * (t - 2) - 1) + b;
+                };
+
+                requestAnimationFrame(animation);
+            };
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        const navbar = document.querySelector('.navbar');
+                        const navbarHeight = navbar ? navbar.offsetHeight : 0;
+                        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+                        
+                        smoothScrollTo(targetPosition);
+                    }
+                });
+            });
+        }
+        
         function initThemeToggle() {
             const toggleButton = document.getElementById('theme-toggle');
             if (!toggleButton) return;
-
             const applyTheme = (theme) => {
                 document.documentElement.setAttribute('data-theme', theme);
                 localStorage.setItem('theme', theme);
             };
-            
-            // Determine initial theme based on localStorage or system preference
             const savedTheme = localStorage.getItem('theme');
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
             const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
             applyTheme(initialTheme);
-            
             toggleButton.addEventListener('click', () => {
                 const currentTheme = document.documentElement.getAttribute('data-theme');
                 const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -677,25 +803,18 @@
             });
         }
 
-        /**
-         * Initializes the tabbed capabilities section.
-         */
         function initCapabilitiesTabs() {
             const tabs = document.querySelectorAll('.capability-tab');
             const panes = document.querySelectorAll('.capability-pane');
             const images = document.querySelectorAll('.capability-img');
-
             if (!tabs.length) return;
-
             tabs.forEach(tab => {
                 tab.addEventListener('click', () => {
                     const paneTarget = document.getElementById(tab.dataset.target);
                     const imgTarget = document.getElementById(tab.dataset.imgTarget);
-
                     tabs.forEach(t => t.classList.remove('active'));
                     panes.forEach(p => p.classList.remove('active'));
                     images.forEach(i => i.classList.remove('active'));
-
                     tab.classList.add('active');
                     if (paneTarget) paneTarget.classList.add('active');
                     if (imgTarget) imgTarget.classList.add('active');
@@ -703,20 +822,12 @@
             });
         }
 
-        /**
-         * Handles navbar visibility and shadow on scroll.
-         */
         function initNavbar() {
             const navbar = document.querySelector('.navbar');
             if (!navbar) return;
-            let lastScrollY = window.scrollY;
+            
+            // This function now only handles the shadow effect on scroll.
             window.addEventListener('scroll', () => {
-                if (lastScrollY < window.scrollY && window.scrollY > 100) {
-                    navbar.classList.add('navbar-hidden');
-                } else {
-                    navbar.classList.remove('navbar-hidden');
-                }
-                lastScrollY = window.scrollY;
                 if (window.scrollY > 10) {
                     navbar.classList.add('navbar-scrolled');
                 } else {
@@ -725,10 +836,8 @@
             });
         }
         
-        /**
-         * Initializes the custom cursor and its hover effects.
-         */
         function initCustomCursor() {
+            if (window.matchMedia("(pointer: coarse)").matches) return;
             const cursorDot = document.querySelector('.cursor-dot');
             const cursorOutline = document.querySelector('.cursor-outline');
             if (!cursorDot || !cursorOutline) return;
@@ -749,20 +858,21 @@
             });
         }
 
-        /**
-         * Sets up the particle animation in the hero section.
-         */
         function initParticleCanvas() {
             const canvas = document.getElementById('particle-canvas');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
-            canvas.width = canvas.parentElement.offsetWidth;
-            canvas.height = canvas.parentElement.offsetHeight;
+            let animationFrameId;
+
+            function setupCanvas() {
+                canvas.width = canvas.parentElement.offsetWidth;
+                canvas.height = canvas.parentElement.offsetHeight;
+            }
+            
             let particles = [];
             const particleCount = window.innerWidth < 768 ? 40 : 70;
 
             function getParticleColor() {
-                // Read the --particle-color CSS variable for dynamic theming
                 return getComputedStyle(document.documentElement).getPropertyValue('--particle-color').trim();
             }
 
@@ -773,13 +883,13 @@
                     this.size = Math.random() * 1.5 + 1;
                     this.speedX = Math.random() * 1 - 0.5;
                     this.speedY = Math.random() * 1 - 0.5;
-                    this.color = getParticleColor();
                 }
-                update() {
+                update(color) {
                     if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
                     if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
                     this.x += this.speedX;
                     this.y += this.speedY;
+                    this.color = color;
                 }
                 draw() {
                     ctx.fillStyle = this.color;
@@ -788,36 +898,31 @@
                     ctx.fill();
                 }
             }
+
             function createParticles() {
                 particles = [];
                 for (let i = 0; i < particleCount; i++) particles.push(new Particle());
             }
+
             function animateParticles() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                particles.forEach(p => { p.update(); p.draw(); });
-                requestAnimationFrame(animateParticles);
-            }
-            createParticles();
-            animateParticles();
-
-            // Re-create particles on theme change to update their colors
-            const themeToggle = document.getElementById('theme-toggle');
-            if (themeToggle) {
-                themeToggle.addEventListener('click', () => {
-                    setTimeout(createParticles, 150); // Delay to allow CSS variables to update
-                });
+                const color = getParticleColor();
+                particles.forEach(p => { p.update(color); p.draw(); });
+                animationFrameId = requestAnimationFrame(animateParticles);
             }
 
-            window.addEventListener('resize', () => {
-                canvas.width = canvas.parentElement.offsetWidth;
-                canvas.height = canvas.parentElement.offsetHeight;
+            function restartAnimation() {
+                cancelAnimationFrame(animationFrameId);
+                setupCanvas();
                 createParticles();
-            });
+                animateParticles();
+            }
+
+            restartAnimation();
+            window.addEventListener('resize', restartAnimation);
+            document.getElementById('theme-toggle')?.addEventListener('click', () => setTimeout(restartAnimation, 150));
         }
 
-        /**
-         * Sets up the Intersection Observer for all scroll-triggered animations.
-         */
         function initScrollAnimations() {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -829,9 +934,6 @@
             document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
         }
 
-        /**
-         * Initializes the testimonial slider functionality.
-         */
         function initTestimonialSlider() {
             const sliderWrapper = document.querySelector(".testimonial-slider-wrapper");
             if (!sliderWrapper) return;
@@ -869,9 +971,6 @@
             startAutoplay();
         }
 
-        /**
-         * Sets up the FAQ accordion functionality.
-         */
         function initFAQ() {
             document.querySelectorAll('.faq-item').forEach(item => {
                 item.querySelector('.faq-question').addEventListener('click', () => {
@@ -880,9 +979,6 @@
             });
         }
         
-        /**
-         * Initializes number counters with an Intersection Observer.
-         */
         function initNumberCounters() {
             const counterObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
@@ -908,22 +1004,29 @@
             document.querySelectorAll('.counter').forEach(counter => counterObserver.observe(counter));
         }
         
-        /**
-         * Initializes the mobile navigation toggle.
-         */
         function initMobileNav() {
             const hamburger = document.querySelector('.hamburger');
             const mobileNav = document.querySelector('.mobile-nav');
+            const mobileNavLinks = mobileNav.querySelectorAll('a');
             if (!hamburger || !mobileNav) return;
-            hamburger.addEventListener('click', () => {
-                hamburger.classList.toggle('is-active');
+
+            const toggleMenu = () => {
+                const isActive = hamburger.classList.toggle('is-active');
                 mobileNav.classList.toggle('is-active');
+                document.body.classList.toggle('menu-open', isActive);
+            };
+
+            hamburger.addEventListener('click', toggleMenu);
+            
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (mobileNav.classList.contains('is-active')) {
+                        toggleMenu();
+                    }
+                });
             });
         }
         
-        /**
-         * Initializes the Journey section's sticky navigation and scroll-spy behavior.
-         */
         function initJourneyNav() {
             const navItems = document.querySelectorAll('.journey-nav-item');
             const chapters = document.querySelectorAll('.journey-chapter');
