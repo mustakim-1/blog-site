@@ -8,6 +8,23 @@
       href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;500;700&display=swap"
       rel="stylesheet"
     />
+    <script>
+      // Immediately sets theme to prevent flash of wrong theme on preloader
+      (function() {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+          } else {
+            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+              document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+              document.documentElement.setAttribute('data-theme', 'light');
+            }
+          }
+        } catch (e) {}
+      })();
+    </script>
     <style>
       :root {
         /* DARK THEME (DEFAULT) */
@@ -81,6 +98,56 @@
       body.menu-open {
         overflow: hidden;
       }
+      
+      /* --- Opening Animation & Preloader --- */
+      .preloader {
+        position: fixed;
+        inset: 0;
+        background-color: var(--bg-primary);
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 0.6s ease-in-out 0.4s, transform 0.6s ease-in-out 0.4s;
+        overflow: hidden;
+      }
+      .preloader.hidden {
+        opacity: 0;
+        transform: translateY(-100%);
+        pointer-events: none;
+      }
+      .preloader-logo {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(2rem, 10vw, 5rem);
+        letter-spacing: 4px;
+        color: var(--text-primary);
+        white-space: nowrap;
+      }
+      .preloader-logo .char {
+        display: inline-block;
+        opacity: 0;
+        transform: translateY(100%);
+        animation: slideUpFadeIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+      }
+      @keyframes slideUpFadeIn {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      body.loading {
+        overflow: hidden;
+      }
+      main, footer, header {
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+      }
+      body:not(.loading) main,
+      body:not(.loading) footer,
+      body:not(.loading) header {
+        opacity: 1;
+      }
+      /* --- End Preloader --- */
 
       .cursor-dot, .cursor-outline {
         pointer-events: none;
@@ -355,6 +422,15 @@
           animation-iteration-count: 1 !important;
           transition-duration: 0.01ms !important;
         }
+        .preloader {
+            display: none;
+        }
+        body.loading {
+            overflow: auto;
+        }
+        main, footer, header {
+            opacity: 1;
+        }
       }
 
       @media (max-width: 992px) {
@@ -491,6 +567,10 @@
     </style>
   </head>
   <body>
+    
+    <div class="preloader">
+      <div class="preloader-logo">SULPHURIC BENCH</div>
+    </div>
 
     <div class="cursor-outline"></div>
     <div class="cursor-dot"></div>
@@ -727,6 +807,45 @@
 
 
     <script>
+      // --- Opening Animation ---
+      function initOpeningAnimation() {
+        const preloader = document.querySelector('.preloader');
+        if (!preloader) return;
+
+        const logo = document.querySelector('.preloader-logo');
+        const text = logo.textContent;
+        logo.innerHTML = ''; // Clear original text
+
+        text.split('').forEach((char, index) => {
+            const span = document.createElement('span');
+            span.className = 'char';
+            // Use &nbsp; for space to make it animatable and visible
+            span.innerHTML = char === ' ' ? '&nbsp;' : char;
+            span.style.animationDelay = `${index * 50}ms`;
+            logo.appendChild(span);
+        });
+
+        document.body.classList.add('loading');
+
+        window.addEventListener('load', () => {
+            // Calculate total time for the text animation to be reasonably complete
+            const totalAnimationTime = (text.length * 50) + 800; // 800ms is the anim duration
+
+            // Hide preloader after its animation is complete
+            setTimeout(() => {
+            preloader.classList.add('hidden');
+            document.body.classList.remove('loading');
+
+            preloader.addEventListener('transitionend', () => {
+                preloader.style.display = 'none';
+            }, { once: true });
+            }, totalAnimationTime);
+        });
+      }
+
+      // Call the animation function at the very start
+      initOpeningAnimation();
+
       document.addEventListener('DOMContentLoaded', function () {
         
         initThemeToggle();
@@ -792,10 +911,8 @@
                 document.documentElement.setAttribute('data-theme', theme);
                 localStorage.setItem('theme', theme);
             };
-            const savedTheme = localStorage.getItem('theme');
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
-            applyTheme(initialTheme);
+
+            // The initial theme is set by the script in <head>, so we only need the click listener here.
             toggleButton.addEventListener('click', () => {
                 const currentTheme = document.documentElement.getAttribute('data-theme');
                 const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -826,7 +943,6 @@
             const navbar = document.querySelector('.navbar');
             if (!navbar) return;
             
-            // This function now only handles the shadow effect on scroll.
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 10) {
                     navbar.classList.add('navbar-scrolled');
@@ -1044,6 +1160,9 @@
             chapters.forEach(chapter => observer.observe(chapter));
         }
       });
+
+
     </script>
+
   </body>
 </html>

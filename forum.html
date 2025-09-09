@@ -159,7 +159,7 @@
 
     <div class="container">
         <header class="site-header">
-            <a href="index.html" class="logo">Sulphuric<span> Bench</span></a>
+            <a href="#" class="logo">Sulphuric<span> Bench</span></a>
             <div class="header-controls">
                 <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
                     <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
@@ -245,7 +245,31 @@
         </div>
     </div>
 
+    <!-- Firebase SDK Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
     <script>
+    // --- START OF JAVASCRIPT ---
+
+    // 1. PASTE YOUR FIREBASE CONFIGURATION OBJECT HERE
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+    // Reference to the 'topics' node in our database
+    const topicsRef = database.ref('topics');
+
+
     (() => {
         const ADMIN_PASSWORD = 'admin123';
         const state = {
@@ -267,41 +291,61 @@
             backToTopicsBtn: document.getElementById('back-to-topics-btn'),
             searchInput: document.getElementById('search-input'),
             sortSelect: document.getElementById('sort-select'),
-            
-            // Modals
-            newTopicModal: {
-                el: document.getElementById('new-topic-modal'),
-                form: document.getElementById('new-topic-form'),
-                closeBtn: document.querySelector('#new-topic-modal .close-btn'),
-                charCounter: document.getElementById('new-topic-char-counter'),
-                textarea: document.getElementById('new-topic-content'),
-            },
-            confirmModal: {
-                el: document.getElementById('confirmation-modal'),
-                title: document.getElementById('confirm-modal-title'),
-                body: document.getElementById('confirm-modal-body'),
-                confirmBtn: document.getElementById('confirm-action-btn'),
-                cancelBtn: document.getElementById('confirm-cancel-btn'),
-            },
-            
-            // Forms & Buttons
+            newTopicModal: { el: document.getElementById('new-topic-modal'), form: document.getElementById('new-topic-form'), closeBtn: document.querySelector('#new-topic-modal .close-btn'), charCounter: document.getElementById('new-topic-char-counter'), textarea: document.getElementById('new-topic-content') },
+            confirmModal: { el: document.getElementById('confirmation-modal'), title: document.getElementById('confirm-modal-title'), body: document.getElementById('confirm-modal-body'), confirmBtn: document.getElementById('confirm-action-btn'), cancelBtn: document.getElementById('confirm-cancel-btn') },
             newTopicBtn: document.getElementById('new-topic-btn'),
             replyForm: document.getElementById('reply-form'),
             replyTextarea: document.getElementById('reply-content'),
             replyCharCounter: document.getElementById('reply-char-counter'),
         };
 
+        // ***************************************************************
+        // ** DATA MANAGER REPLACED WITH FIREBASE **
+        // ***************************************************************
         const dataManager = {
-            load: () => {
-                const stored = localStorage.getItem('forumDataAdvanced');
-                state.topics = stored ? JSON.parse(stored) : dataManager.getDefaultData();
+            // Load is now a real-time listener
+            listen: () => {
+                uiManager.setLoading(DOM.topicsContainer, true);
+                
+                // on() sets up a listener that runs whenever the data changes in Firebase
+                topicsRef.on('value', (snapshot) => {
+                    if (snapshot.exists()) {
+                        const topicsFromDb = snapshot.val();
+                        // Firebase returns an object, so we convert it to an array
+                        state.topics = Object.values(topicsFromDb);
+                    } else {
+                        // If database is empty, create default data
+                        console.log("No data found in Firebase. Seeding with default data.");
+                        const defaultData = dataManager.getDefaultData();
+                        // Convert array to object with IDs as keys for Firebase
+                        const defaultDataObject = defaultData.reduce((obj, item) => {
+                           obj[item.id] = item;
+                           return obj;
+                        }, {});
+                        topicsRef.set(defaultDataObject); // This will trigger the listener again
+                        return; // Exit here, the re-triggered listener will handle rendering
+                    }
+                    
+                    // Once data is loaded, render the current view
+                    renderManager.rerenderCurrent();
+                });
             },
-            save: () => localStorage.setItem('forumDataAdvanced', JSON.stringify(state.topics)),
+            // Save now writes the entire state.topics array to Firebase
+            save: () => {
+                // We convert the array to an object where keys are the topic IDs.
+                // This is a more efficient way to store and update data in Firebase.
+                const topicsObject = state.topics.reduce((obj, item) => {
+                    obj[item.id] = item;
+                    return obj;
+                }, {});
+                topicsRef.set(topicsObject);
+            },
             getDefaultData: () => [
-                { id: 1, title: 'James Webb Telescope\'s latest findings', author: 'CosmoExplorer', date: new Date('2023-10-26T10:00:00Z'), posts: [{ author: 'CosmoExplorer', date: new Date('2023-10-26T10:00:00Z'), content: 'Has anyone seen the incredible new images of the Pillars of Creation? The level of detail is just breathtaking.', likes: 15 }, { author: 'Stargazer_82', date: new Date('2023-10-26T12:30:00Z'), content: 'Absolutely stunning! It will completely change our models of star formation.', likes: 8 }] },
-                { id: 2, title: 'The future of CRISPR technology', author: 'GeneGenius', date: new Date('2023-10-25T14:00:00Z'), posts: [{ author: 'GeneGenius', date: new Date('2023-10-25T14:00:00Z'), content: 'With the advancements in CRISPR-Cas9, what do you believe is the next big breakthrough?', likes: 12 }] }
+                { id: 1, title: 'James Webb Telescope\'s latest findings', author: 'CosmoExplorer', date: new Date('2023-10-26T10:00:00Z').toISOString(), posts: [{ author: 'CosmoExplorer', date: new Date('2023-10-26T10:00:00Z').toISOString(), content: 'Has anyone seen the incredible new images of the Pillars of Creation? The level of detail is just breathtaking.', likes: 15 }, { author: 'Stargazer_82', date: new Date('2023-10-26T12:30:00Z').toISOString(), content: 'Absolutely stunning! It will completely change our models of star formation.', likes: 8 }] },
+                { id: 2, title: 'The future of CRISPR technology', author: 'GeneGenius', date: new Date('2023-10-25T14:00:00Z').toISOString(), posts: [{ author: 'GeneGenius', date: new Date('2023-10-25T14:00:00Z').toISOString(), content: 'With the advancements in CRISPR-Cas9, what do you believe is the next big breakthrough?', likes: 12 }] }
             ]
         };
+        // ***************************************************************
 
         const uiManager = {
             switchView(viewName) {
@@ -321,7 +365,6 @@
                 DOM.confirmModal.body.textContent = body;
                 this.showModal(DOM.confirmModal);
                 
-                // Clone and replace to remove old listeners
                 const newConfirmBtn = DOM.confirmModal.confirmBtn.cloneNode(true);
                 DOM.confirmModal.confirmBtn.parentNode.replaceChild(newConfirmBtn, DOM.confirmModal.confirmBtn);
                 DOM.confirmModal.confirmBtn = newConfirmBtn;
@@ -340,36 +383,29 @@
             },
             renderTopicList() {
                 let topicsToRender = [...state.topics];
-
-                // 1. Filter
                 if (state.searchQuery) {
                     const query = state.searchQuery.toLowerCase();
                     topicsToRender = topicsToRender.filter(t => 
                         t.title.toLowerCase().includes(query) || 
-                        t.posts.some(p => p.content.toLowerCase().includes(query))
+                        (t.posts && t.posts.some(p => p.content.toLowerCase().includes(query)))
                     );
                 }
-
-                // 2. Sort
                 switch (state.sortBy) {
-                    case 'newest':
-                        topicsToRender.sort((a, b) => new Date(b.date) - new Date(a.date));
-                        break;
-                    case 'posts':
-                        topicsToRender.sort((a, b) => b.posts.length - a.posts.length);
-                        break;
-                    case 'activity':
-                    default:
-                        topicsToRender.sort((a, b) => new Date(b.posts[b.posts.length-1].date) - new Date(a.posts[a.posts.length-1].date));
+                    case 'newest': topicsToRender.sort((a, b) => new Date(b.date) - new Date(a.date)); break;
+                    case 'posts': topicsToRender.sort((a, b) => (b.posts?.length || 0) - (a.posts?.length || 0)); break;
+                    case 'activity': default:
+                        topicsToRender.sort((a, b) => {
+                            const lastPostA = a.posts ? a.posts[a.posts.length-1].date : a.date;
+                            const lastPostB = b.posts ? b.posts[b.posts.length-1].date : b.date;
+                            return new Date(lastPostB) - new Date(lastPostA);
+                        });
                         break;
                 }
-
                 DOM.topicsContainer.innerHTML = '';
                 if (topicsToRender.length === 0) {
                     DOM.topicsContainer.innerHTML = `<p>${state.searchQuery ? 'No topics match your search.' : 'No discussions yet. Be the first!'}</p>`;
                     return;
                 }
-                
                 topicsToRender.forEach(topic => {
                     const el = document.createElement('div');
                     el.className = 'topic-item';
@@ -379,7 +415,7 @@
                                 <h3 class="topic-title">${escapeHTML(topic.title)}</h3>
                                 <p class="topic-meta">By <span class="author">${escapeHTML(topic.author)}</span> on ${formatDate(topic.date)}</p>
                             </div>
-                            <div class="topic-stats"><span>${topic.posts.length}</span> Posts</div>
+                            <div class="topic-stats"><span>${topic.posts?.length || 0}</span> Posts</div>
                         </div>
                         ${state.isAdminMode ? `<button class="delete-btn delete-topic-btn" data-topic-id="${topic.id}">Delete</button>` : ''}
                     `;
@@ -392,29 +428,31 @@
                 
                 DOM.topicTitleHeader.textContent = topic.title;
                 DOM.postsContainer.innerHTML = '';
-                topic.posts.forEach((post, index) => {
-                    const likedPosts = JSON.parse(sessionStorage.getItem('likedPosts') || '[]');
-                    const isLiked = likedPosts.includes(`${topic.id}-${index}`);
-                    const el = document.createElement('div');
-                    el.className = 'post';
-                    el.innerHTML = `
-                        <div class="post-author-info">
-                            <div class="author-avatar">${escapeHTML(post.author).charAt(0).toUpperCase()}</div>
-                            <div><div class="author-name">${escapeHTML(post.author)}</div><div class="post-date">${formatDate(post.date)}</div></div>
-                        </div>
-                        <div class="post-content">
-                            ${state.isAdminMode ? `<div style="display: flex; justify-content: flex-end; margin-bottom: 10px;"><button class="delete-btn delete-post-btn" data-post-index="${index}">Delete</button></div>` : ''}
-                            <p>${escapeHTML(post.content)}</p>
-                            <div class="post-footer">
-                                <button class="like-btn ${isLiked ? 'liked' : ''}" data-post-index="${index}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="${isLiked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-                                    <span>${post.likes}</span>
-                                </button>
+                if (topic.posts) {
+                    topic.posts.forEach((post, index) => {
+                        const likedPosts = JSON.parse(sessionStorage.getItem('likedPosts') || '[]');
+                        const isLiked = likedPosts.includes(`${topic.id}-${index}`);
+                        const el = document.createElement('div');
+                        el.className = 'post';
+                        el.innerHTML = `
+                            <div class="post-author-info">
+                                <div class="author-avatar">${escapeHTML(post.author).charAt(0).toUpperCase()}</div>
+                                <div><div class="author-name">${escapeHTML(post.author)}</div><div class="post-date">${formatDate(post.date)}</div></div>
                             </div>
-                        </div>
-                    `;
-                    DOM.postsContainer.appendChild(el);
-                });
+                            <div class="post-content">
+                                ${state.isAdminMode ? `<div style="display: flex; justify-content: flex-end; margin-bottom: 10px;"><button class="delete-btn delete-post-btn" data-post-index="${index}">Delete</button></div>` : ''}
+                                <p>${escapeHTML(post.content)}</p>
+                                <div class="post-footer">
+                                    <button class="like-btn ${isLiked ? 'liked' : ''}" data-post-index="${index}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="${isLiked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                                        <span>${post.likes}</span>
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                        DOM.postsContainer.appendChild(el);
+                    });
+                }
             }
         };
 
@@ -430,63 +468,48 @@
                         state.isAdminMode = true;
                         DOM.adminToggleBtn.textContent = 'Exit Admin Mode';
                         DOM.body.classList.add('admin-active');
-                    } else if (pass) {
-                        alert('Incorrect password.');
-                        return;
-                    }
+                    } else if (pass) { alert('Incorrect password.'); return; }
                 }
                 renderManager.rerenderCurrent();
             },
             deleteTopic(topicId) {
-                uiManager.showConfirmation(
-                    'Delete Topic?',
-                    'This will permanently delete the entire discussion. This action cannot be undone.',
-                    () => {
-                        state.topics = state.topics.filter(t => t.id !== topicId);
-                        dataManager.save();
-                        if (state.currentTopicId === topicId) {
-                            state.currentTopicId = null;
-                            uiManager.switchView('list');
-                        }
-                        renderManager.renderTopicList();
-                    }
-                );
+                uiManager.showConfirmation('Delete Topic?', 'This will permanently delete the entire discussion.', () => {
+                    state.topics = state.topics.filter(t => t.id !== topicId);
+                    dataManager.save();
+                    if (state.currentTopicId === topicId) { state.currentTopicId = null; uiManager.switchView('list'); }
+                });
             },
             deletePost(topicId, postIndex) {
                  const topic = state.topics.find(t => t.id === topicId);
                  if (!topic) return;
                  if (topic.posts.length === 1) {
-                    uiManager.showConfirmation("Delete Last Post?", "This is the only post. Deleting it will remove the entire topic. Proceed?", () => this.deleteTopic(topicId));
+                    uiManager.showConfirmation("Delete Last Post?", "Deleting this will remove the entire topic. Proceed?", () => this.deleteTopic(topicId));
                     return;
                  }
                  uiManager.showConfirmation("Delete Post?", "Are you sure you want to permanently delete this post?", () => {
                     topic.posts.splice(postIndex, 1);
                     dataManager.save();
-                    renderManager.renderTopicDetail(topicId);
                 });
             },
             createTopic({ author, title, content }) {
                 state.topics.push({ id: Date.now(), author, title, date: new Date().toISOString(), posts: [{ author, content, date: new Date().toISOString(), likes: 0 }] });
                 dataManager.save();
-                renderManager.renderTopicList();
             },
             createReply({ topicId, author, content }) {
                 const topic = state.topics.find(t => t.id === topicId);
                 if (topic) {
+                    if (!topic.posts) topic.posts = [];
                     topic.posts.push({ author, content, date: new Date().toISOString(), likes: 0 });
                     dataManager.save();
-                    renderManager.renderTopicDetail(topicId);
-                    DOM.postsContainer.lastElementChild.scrollIntoView({ behavior: 'smooth' });
+                    DOM.postsContainer.lastElementChild?.scrollIntoView({ behavior: 'smooth' });
                 }
             },
             likePost(topicId, postIndex) {
                 const topic = state.topics.find(t => t.id === topicId);
                 const post = topic?.posts[postIndex];
                 if (!post) return;
-
                 const likedPosts = JSON.parse(sessionStorage.getItem('likedPosts') || '[]');
                 const postId = `${topic.id}-${postIndex}`;
-                
                 if (likedPosts.includes(postId)) {
                     post.likes--;
                     const index = likedPosts.indexOf(postId);
@@ -497,7 +520,6 @@
                 }
                 sessionStorage.setItem('likedPosts', JSON.stringify(likedPosts));
                 dataManager.save();
-                renderManager.renderTopicDetail(topicId);
             },
             initTheme() {
                 const applyTheme = theme => { document.documentElement.setAttribute('data-theme', theme); localStorage.setItem('theme', theme); };
@@ -512,16 +534,11 @@
         };
         
         function setupEventListeners() {
-            // Header & Global
             DOM.adminToggleBtn.addEventListener('click', actions.toggleAdminMode);
             DOM.backToTopicsBtn.addEventListener('click', () => { state.currentTopicId = null; uiManager.switchView('list'); });
-
-            // Topic List View
             DOM.newTopicBtn.addEventListener('click', () => uiManager.showModal(DOM.newTopicModal));
             DOM.searchInput.addEventListener('input', e => { state.searchQuery = e.target.value; renderManager.renderTopicList(); });
             DOM.sortSelect.addEventListener('change', e => { state.sortBy = e.target.value; renderManager.renderTopicList(); });
-
-            // New Topic Modal
             DOM.newTopicModal.closeBtn.addEventListener('click', () => uiManager.hideModal(DOM.newTopicModal));
             DOM.newTopicModal.el.addEventListener('click', e => e.target === DOM.newTopicModal.el && uiManager.hideModal(DOM.newTopicModal));
             DOM.newTopicModal.form.addEventListener('submit', e => {
@@ -535,11 +552,7 @@
                 DOM.newTopicModal.charCounter.textContent = '0 / 5000';
                 uiManager.hideModal(DOM.newTopicModal);
             });
-            DOM.newTopicModal.textarea.addEventListener('input', e => {
-                DOM.newTopicModal.charCounter.textContent = `${e.target.value.length} / 5000`;
-            });
-            
-            // Reply Form
+            DOM.newTopicModal.textarea.addEventListener('input', e => { DOM.newTopicModal.charCounter.textContent = `${e.target.value.length} / 5000`; });
             DOM.replyForm.addEventListener('submit', e => {
                 e.preventDefault();
                 actions.createReply({
@@ -550,21 +563,15 @@
                 e.target.reset();
                 DOM.replyCharCounter.textContent = '0 / 2000';
             });
-            DOM.replyTextarea.addEventListener('input', e => {
-                DOM.replyCharCounter.textContent = `${e.target.value.length} / 2000`;
-            });
-            
-            // Confirmation Modal
+            DOM.replyTextarea.addEventListener('input', e => { DOM.replyCharCounter.textContent = `${e.target.value.length} / 2000`; });
             DOM.confirmModal.cancelBtn.addEventListener('click', () => uiManager.hideModal(DOM.confirmModal));
             DOM.confirmModal.el.addEventListener('click', e => e.target === DOM.confirmModal.el && uiManager.hideModal(DOM.confirmModal));
-
-            // Event Delegation
             document.addEventListener('click', e => {
                 const clickableTopic = e.target.closest('.topic-item-clickable');
                 if (clickableTopic) {
                     state.currentTopicId = Number(clickableTopic.dataset.topicId);
-                    renderManager.renderTopicDetail(state.currentTopicId);
                     uiManager.switchView('detail');
+                    renderManager.renderTopicDetail(state.currentTopicId);
                 }
                 if (e.target.matches('.delete-topic-btn')) actions.deleteTopic(Number(e.target.dataset.topicId));
                 if (e.target.matches('.delete-post-btn')) actions.deletePost(state.currentTopicId, Number(e.target.dataset.postIndex));
@@ -577,16 +584,16 @@
 
         function init() {
             actions.initTheme();
-            dataManager.load();
             setupEventListeners();
-            uiManager.setLoading(DOM.topicsContainer, true);
-            setTimeout(() => { // Simulate API call delay
-                renderManager.renderTopicList();
-            }, 500);
+            // Start listening for real-time updates from Firebase
+            dataManager.listen();
         }
 
         init();
     })();
     </script>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
 </body>
 </html>
